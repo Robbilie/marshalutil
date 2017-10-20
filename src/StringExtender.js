@@ -18,7 +18,7 @@ Object.defineProperty(Buffer.prototype, 'ToHexString', {
 
 Object.defineProperty(String.prototype, 'HexToBytes', {
 	value: function () {
-		return Array.from(this, "hex");
+		return Buffer.from(this, "hex");
 	}
 });
 
@@ -40,5 +40,17 @@ Object.defineProperty(String.prototype, 'IsLetterOrDigit', {
 	value: function () {
 		const charCode = this.charCodeAt(0);
 		return (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || (charCode >= 48 && charCode <= 57);
+	}
+});
+
+Object.defineProperty(Buffer.prototype, 'AddRange', {
+	value: function (buf) {
+		return Buffer.concat([this, buf], this.length + buf.length);
+	}
+});
+
+Object.defineProperty(Buffer.prototype, 'Add', {
+	value: function (byte) {
+		return Buffer.concat([this, Buffer.from([ byte ])], this.length + 1);
 	}
 });

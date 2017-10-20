@@ -1,7 +1,11 @@
+require("./StringExtender");
+
 class BitConverter {
 
-	static GetBytes () {
-
+	static GetBytes (size) {
+		let buf = Buffer.alloc(4);
+		buf.writeInt32LE(size);
+		return buf;
 	}
 
 	static ToString (value) {

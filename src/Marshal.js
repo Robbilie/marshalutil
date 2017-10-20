@@ -1,6 +1,5 @@
 const Types = require("./Types");
-const ProtocolType = require("./ProtocolType");
-const BitConverter = require("./BitConverter");
+const { BitConverter, ProtocolType } = require("./");
 
 class Marshal {
 
@@ -19,7 +18,7 @@ class Marshal {
 	}
 
 	static AsInt32 (input) {
-		const b = Buffer.alloc(8)
+		const b = Buffer.alloc(4)
 		b.writeInt32LE(input, 0);
 		return Buffer.from([ ProtocolType.Int32, ...b ]);
 	}
@@ -57,3 +56,5 @@ class Marshal {
 	}
 
 }
+
+module.exports = Marshal;

@@ -3,7 +3,7 @@ const ProtocolConstants = {};
 ProtocolConstants.ProtocolId = 0x7e;
 ProtocolConstants.SharedFlag = 0x40;
 ProtocolConstants.ZlibMarker = 0x78;
-ProtocolConstants.PacketHeader = new Buffer([ ProtocolConstants.ProtocolId, 0x00, 0x00, 0x00, 0x00 ]);
+ProtocolConstants.PacketHeader = Buffer.from([ ProtocolConstants.ProtocolId, 0x00, 0x00, 0x00, 0x00 ]);
 ProtocolConstants.StringTable = [
 	null,
 	"*corpid",
