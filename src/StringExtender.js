@@ -43,6 +43,13 @@ Object.defineProperty(String.prototype, 'IsLetterOrDigit', {
 	}
 });
 
+Object.defineProperty(String.prototype, 'IsASCII', {
+	value: function () {
+		const charCode = this.charCodeAt(0);
+		return (charCode >= 0x20 && charCode <= 0x7e);
+	}
+});
+
 Object.defineProperty(Buffer.prototype, 'AddRange', {
 	value: function (buf) {
 		return Buffer.concat([this, buf], this.length + buf.length);

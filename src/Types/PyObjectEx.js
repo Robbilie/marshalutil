@@ -9,7 +9,7 @@ class PyObjectEx extends PyObject {
 	}
 
 	InternalDecode (context, type) {
-		this.Dict = {};
+		this.Dict = new Map();
 		this.List = [];
 		this.Header = context.ProcessSnip();
 
@@ -24,8 +24,10 @@ class PyObjectEx extends PyObject {
 			let obj = context.ProcessSnip();
 			if (obj instanceof Types.PyMark)
 				break;
-			this.Dict[context.ProcessSnip()] = context.ProcessSnip();
+			this.Dict.set(context.ProcessSnip(), context.ProcessSnip());
 		}
+
+		//console.log("PyObjectEx", this);
 	}
 
 }

@@ -43,6 +43,20 @@ class PyList extends PyObject {
 		return `<\n${this.Items.reduce((str, obj) => str + this.Indent(indentLevel + 1) + obj.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)}>`;
 	}
 
+	InternalEncode () {
+		if (this.Items.length === 0)
+			return Buffer.from([ ProtocolType.ListEmpty ]);
+		else {
+			let marshalled = null;
+			if (this.Items.length === 1)
+				marshalled = Buffer.from([ ProtocolType.ListOne ]);
+			else
+				marshalled = Buffer.from([ ProtocolType.List ]);
+			this.Items.forEach(item => marshalled = marshalled.AddRange(item.Encode()));
+			return marshalled;
+		}
+	}
+
 }
 
 module.exports = PyList;

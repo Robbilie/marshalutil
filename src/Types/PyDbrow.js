@@ -13,12 +13,22 @@ class PyDbrow extends PyObject {
 		if (type !== ProtocolType.Dbrow)
 			this.ThrowParseException();
 
+		context.NeedObjectEx = true;
 		this.Header = context.ProcessSnip();
+		context.NeedObjectEx = false;
+
+		console.log(this.Header.Header.ToString())
 
 		this.Raw = this.LoadZeroCompressed(context);
 
+		console.log(this.Raw.toString("hex"))
+
 		if (!this.ParseRowData(context))
 			this.ThrowParseException("Could not fully unpack Dbrow, stream integrity is broken");
+
+		console.log(this.Columns)
+
+		//process.exit();
 	}
 
 	ParseRowData (context) {
@@ -42,11 +52,11 @@ class PyDbrow extends PyObject {
 
 		for (let obj of columns.Items) {
 			let fieldData = obj;
-			if (!fieldData || fieldData.Items.length < 2)
+			if (!(fieldData instanceof Types.PyTuple) || fieldData.Items.length < 2)
 				continue;
 
 			let name = fieldData.Items[0];
-			if (!name)
+			if (!(name instanceof Types.PyString))
 				continue;
 
 			newcolumns.push(new Column(name.Value, fieldData.Items[1].IntValue));
@@ -54,8 +64,14 @@ class PyDbrow extends PyObject {
 
 		this.Columns = newcolumns;
 
-		let sizeList = this.Columns.sort((a, b) => FieldTypeHelper.GetTypeBits(a.Type) > FieldTypeHelper.GetTypeBits(b.Type) ? -1 : 1);
+		console.log(newcolumns)
+
+		let sizeList = this.Columns.sort((a, b) => a.Type === b.Type ? 0 : (FieldTypeHelper.GetTypeBits(a.Type) > FieldTypeHelper.GetTypeBits(b.Type) ? -1 : 1));
+		console.log(sizeList)
+		console.log(sizeList.map(c => FieldTypeHelper.GetTypeBits(c.Type)))
+
 		let sizeSum = this.Columns.reduce((sum, obj) => sum + FieldTypeHelper.GetTypeBits(obj.Type), 0);
+		console.log(sizeSum)
 
 		sizeSum = (sizeSum + 7) >> 3;
 
@@ -66,17 +82,17 @@ class PyDbrow extends PyObject {
 			index: 0,
 			BaseStream: rawStream,
 			ReadInt64 () {
-				let val = this.BaseStream.readDoubleLE(this.index);
+				let val = this.BaseStream.readUIntLE(this.index, 8);
 				this.index += 8;
 				return val;
 			},
 			ReadInt32 () {
-				let val = this.BaseStream.readInt32LE(this.index);
+				let val = this.BaseStream.readUInt32LE(this.index);
 				this.index += 4;
 				return val;
 			},
 			ReadInt16 () {
-				let val = this.BaseStream.readInt16LE(this.index);
+				let val = this.BaseStream.readUInt32LE(this.index);
 				this.index += 2;
 				return val;
 			},

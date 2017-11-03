@@ -15,7 +15,7 @@ class PyObject {
 	}
 
 	InternalDecode () {
-		throw new Error("NotImplementedException: InternalDecode");
+		throw new Error("NotImplementedException: InternalDecode " + this.constructor.name);
 	}
 
 	Encode () {
@@ -23,7 +23,7 @@ class PyObject {
 	}
 
 	InternalEncode () {
-		throw new Error("NotImplementedException: InternalEncode");
+		throw new Error("NotImplementedException: InternalEncode " + this.constructor.name);
 	}
 
 	ThrowParseException (msg) {

@@ -38,6 +38,26 @@ class PyInt extends PyObject {
 		return `<${this.Value}>`;
 	}
 
+	InternalEncode () {
+		if (this.Value == 0)
+			return Buffer.from([ ProtocolType.Zero ]);
+		else if (this.Value == 1)
+			return Buffer.from([ ProtocolType.One ]);
+		else if (this.Value == -1)
+			return Buffer.from([ ProtocolType.Minusone ]);
+		else if (this.Value < 127)
+			return Buffer.from([ ProtocolType.Int8 ]).Add(this.Value);
+		else if (this.Value < 32768) {
+			let buf = Buffer.alloc(2);
+			buf.writeInt16LE(this.Value, 0)
+			return Buffer.from([ ProtocolType.Int16 ]).AddRange(buf);
+		} else {
+			let buf = Buffer.alloc(4);
+			buf.writeInt32LE(this.Value, 0)
+			return Buffer.from([ ProtocolType.Int32 ]).AddRange(buf);
+		}
+	}
+
 }
 
 module.exports = PyInt;

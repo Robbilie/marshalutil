@@ -91,7 +91,7 @@ const tests = [
 			let ms = new MarshalStream(Buffer.from(line, "hex"));
 
 			try {
-				//console.log(ms.Value.ToString());
+				console.log(ms.Value.ToString());
 				ms.Value;
 				console.log(lines.indexOf(line) + 1, "/", lines.length);
 			} catch (e) {

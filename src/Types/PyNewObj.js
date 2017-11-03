@@ -1,7 +1,8 @@
-const { PyObjectType, PyObject } = require("./");
-const { ProtocolType } = require("./../")
+const { PyObjectType, PyObjectEx } = require("./");
+const { ProtocolType } = require("./../");
+const Types = require("./");
 
-class PyNewObj extends PyObject {
+class PyNewObj extends PyObjectEx {
 
 	constructor () {
 		super(PyObjectType.NewObj);
@@ -12,6 +13,10 @@ class PyNewObj extends PyObject {
 			this.ThrowParseException();
 
 		super.InternalDecode(context, type);
+	}
+
+	InternalToString (indentLevel = 0) {
+		return `<${this.Type}: ${this.Name.InternalToString(indentLevel)}(${this.Arguments.InternalToString(indentLevel)})>`;
 	}
 
 }

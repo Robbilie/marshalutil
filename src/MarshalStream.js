@@ -9,14 +9,25 @@ class MarshalStream {
 
 	constructor (dat) {
 
+		if (!(dat instanceof Buffer))
+			throw new Error("InvalidTypeException: Not a Buffer");
+
 		this.Index = 1;
 		this.StorageMap = {};
 		this.Storage = {};
 		this._currentStorageIndex = 0;
 
+
+		this.NeedObjectEx = false;
+		this.SavedElements = {};
+		this.SavedElementsMap = {};
+		this._currentSaveIndex = 0;
+
 		this._output = null;
 		this._initialized = null;
 		this._syncLock = null;
+
+		//console.log(dat.toString("hex"));
 
 		if (dat === null || dat.length === 0)
 			throw new Error("ArgumentNullException");
@@ -30,6 +41,19 @@ class MarshalStream {
 	get Value () {
 		if (this._initialized)
 			return this._output;
+
+		let saveCount = this.GetInt(4);
+		if (saveCount > 0) {
+			let currentPos = 0;
+			let sharedMapData = this.Raw.slice(this.Raw.length - saveCount * 4);
+			for (let i = 0; i < saveCount; i++) {
+				let copy = sharedMapData.slice(i * 4, i * 4 + 4);
+				this.SavedElementsMap[i] = BitConverter.ToInt32(copy.SwapEndianness(), 0);
+			}
+			console.log(this.SavedElementsMap)
+
+		}
+		/*
 		const sharedMapSize = this.GetInt(4);
 		if (sharedMapSize > 0) {
 			let sharedMapData = this.Raw.slice(this.Raw.length - sharedMapSize * 4);
@@ -38,6 +62,7 @@ class MarshalStream {
 				this.StorageMap[i] = BitConverter.ToInt32(copy.SwapEndianness(), 0);
 			}
 		}
+		*/
 		this._output = this.ProcessSnip();
 		this._initialized = true;
 		return this._output;
@@ -118,8 +143,30 @@ class MarshalStream {
 				result = this.CreateAndDecode(Types.PyInstance, type);
 				break;
 			case ProtocolType.Ref:
-				result = this.Storage[this.StorageMap[this.GetByte() - 1] - 1];
+				let index = this.GetByte();
+				//console.log(index)
+				//console.log(this.SavedElements)
+				//console.log(this.SavedElementsMap)
+				result = this.SavedElements[index - 1];
+				if (this.NeedObjectEx && !(result instanceof Types.PyObjectEx)) {
+					result = this.SavedElements[this.SavedElementsMap[index]];
+					if (!(result instanceof Types.PyObjectEx)) {
+						for (let savedObj of Object.values(this.SavedElements)) {
+							if (savedObj instanceof Types.PyObjectEx) {
+								result = savedObj;
+								break;
+							}
+						}
+					}
+				}
+				this.NeedObjectEx = false;
 				break;
+				/*
+				result = this.Storage[this.StorageMap[this.GetByte() - 1] - 1];
+				console.log(this.Storage)
+				console.log(this.StorageMap)
+				break;
+				*/
 			case ProtocolType.Dict:
 				result = this.CreateAndDecode(Types.PyDict, type);
 				break;
@@ -143,12 +190,20 @@ class MarshalStream {
 		}
 
 		if (shared) {
+			let nth = this._currentSaveIndex++;
+			let saveIndex = this.SavedElementsMap[nth];
+			this.SavedElements[saveIndex - 1] = result;
+		}
+
+		/*
+		if (shared) {
 			let sharedIndex = this.StorageMap[this._currentStorageIndex++];
 			if (sharedIndex === 0)
 				sharedIndex = 1;
 			if (sharedIndex > 0)
 				this.Storage[sharedIndex - 1] = result;
 		}
+		*/
 		return result;
 	}
 

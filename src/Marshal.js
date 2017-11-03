@@ -13,7 +13,7 @@ class Marshal {
 
 	static AsFloat (input) {
 		const b = Buffer.alloc(8)
-		b.writeFloatLE(input, 0);
+		b.writeDoubleLE(input, 0);
 		return Buffer.from([ ProtocolType.Float, ...b ]);
 	}
 
@@ -24,7 +24,7 @@ class Marshal {
 	}
 
 	static AsBool (input) {
-		return input ? ProtocolType.True : ProtocolType.False;
+		return Buffer.from([ input ? ProtocolType.True : ProtocolType.False ]);
 	}
 
 	static AsAuto (input) {
@@ -41,7 +41,10 @@ class Marshal {
 				return this.AsBuffer(input);
 			case "Number":
 				console.log("can be a different number type");
-				return this.AsInt32(input);
+				if (input % 1 === 0)
+					return this.AsInt32(input);
+				else
+					return this.AsFloat(input);
 			case "PyInt":
 				return this.AsInt32(input.Value);
 			case "Boolean":

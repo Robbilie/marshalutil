@@ -12,6 +12,10 @@ class PyNone extends PyObject {
 			this.ThrowParseException();
 	}
 
+	InternalEncode () {
+		return Buffer.from([ ProtocolType.None ]);
+	}
+
 }
 
 module.exports = PyNone;

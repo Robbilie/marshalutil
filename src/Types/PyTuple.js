@@ -43,6 +43,24 @@ class PyTuple extends PyObject {
 		return `<\n${this.Items.reduce((str, obj) => str + this.Indent(indentLevel + 1) + obj.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)}>`;
 	}
 
+	InternalEncode () {
+		let marshalled = null;
+
+		if (this.Items.length === 0)
+			marshalled = Buffer.from([ ProtocolType.TupleEmpty ]);
+		else if (this.Items.length === 1)
+			marshalled = Buffer.from([ ProtocolType.TupleOne ]);
+		else if (this.Items.length === 2)
+			marshalled = Buffer.from([ ProtocolType.TupleTwo ]);
+		else
+			marshalled = Buffer.from([ ProtocolType.Tuple, this.Items.length ]);
+
+		this.Items.forEach(item => marshalled = marshalled.AddRange(item.Encode()));
+
+		return marshalled;
+
+	}
+
 }
 
 module.exports = PyTuple;

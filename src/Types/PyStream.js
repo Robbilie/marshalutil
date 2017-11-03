@@ -1,10 +1,12 @@
 const { PyObjectType, PyObject } = require("./");
-const { ProtocolType, MarshalStream } = require("./../")
+const { ProtocolType, MarshalStream, ProtocolConstants } = require("./../")
 
 class PyStream extends PyObject {
 
-	constructor () {
+	constructor (data) {
 		super(PyObjectType.Stream);
+		if (data)
+		this.Stream = new MarshalStream(ProtocolConstants.PacketHeader.AddRange(data instanceof Buffer ? data : data.Encode()));
 	}
 
 	get Raw () {
@@ -23,7 +25,19 @@ class PyStream extends PyObject {
 	}
 
 	InternalToString (indentLevel = 0) {
-		return `<Stream: ${this.Content}>`;
+		return `<Stream: ${this.Content.ToString(indentLevel + 1)}>`;
+	}
+
+	InternalEncode () {
+		return Buffer
+			.from([ ProtocolType.Stream, this.Stream.Raw.length ])
+			.AddRange(this.Stream.Raw);
+
+		let marshalled = this.Data instanceof Buffer ? this.Data : this.Data.Encode();
+		return Buffer
+			.from([ ProtocolType.Stream, ProtocolConstants.PacketHeader.length + marshalled.length ])
+			.AddRange(ProtocolConstants.PacketHeader)
+			.AddRange(marshalled);
 	}
 
 }

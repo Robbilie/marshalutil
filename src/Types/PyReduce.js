@@ -1,5 +1,5 @@
 const { PyObjectType, PyObjectEx } = require("./");
-const { ProtocolType, MarshalStream } = require("./../")
+const { ProtocolType } = require("./../")
 
 class PyReduce extends PyObjectEx {
 

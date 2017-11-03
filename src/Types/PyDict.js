@@ -1,10 +1,10 @@
 const { PyObjectType, PyObject } = require("./");
-const { ProtocolType } = require("./../");
+const { Marshal, ProtocolType } = require("./../");
 
 class PyDict extends PyObject {
 
-	constructor (dict = {}) {
-		super(PyObjectType.Dict);
+	constructor (dict = new Map()) {
+		super(PyObjectType.Dictionary);
 		this.Dict = dict;
 	}
 
@@ -13,17 +13,31 @@ class PyDict extends PyObject {
 			this.ThrowParseException();
 
 		let dictLength = context.GetLength();
-		let dict = {};
+		let dict = new Map();
 		for (let i = 0; i < dictLength; i++) {
 			let value = context.ProcessSnip();
 			let key = context.ProcessSnip();
-			dict[key] = value;
+			dict.set(key.Value, value);
+			//dict.set(key, value);
 		}
 		this.Dict = dict;
 	}
 
 	InternalToString (indentLevel = 0) {
-		return `<\n${Object.entries(this.Dict).reduce((str, [key, value]) => str + this.Indent(indentLevel + 1) + key + " " + value.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)}>`;
+		return `<\n${[...this.Dict.entries()].reduce((str, [key, value]) => str + this.Indent(indentLevel + 1) + "<" + key + ">" + " " + value.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)}>`;
+		//return `<\n${[...this.Dict.entries()].reduce((str, [key, value]) => str + this.Indent(indentLevel + 1) + key.ToString() + " " + value.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)}>`;
+	}
+
+	InternalEncode () {
+		let marshalled = Buffer
+			.from([ ProtocolType.Dict ])
+			.Add(this.Dict.size);
+		this.Dict.forEach((value, key) => {
+			marshalled = marshalled
+				.AddRange(value.Encode())
+				.AddRange(key.Encode());
+		});
+		return marshalled;
 	}
 
 }

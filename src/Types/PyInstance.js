@@ -4,8 +4,10 @@ const Types = require("./");
 
 class PyInstance extends PyObject {
 
-	constructor () {
+	constructor (name, args) {
 		super(PyObjectType.Instance);
+		this.Name = name;
+		this.Arguments = args;
 	}
 
 	InternalDecode (context, type) {
@@ -22,6 +24,10 @@ class PyInstance extends PyObject {
 
 	InternalToString (indentLevel = 0) {
 		return `<${this.Type}: ${this.Name}(${this.Arguments.InternalToString(indentLevel)})>`;
+	}
+
+	InternalEncode () {
+		return Buffer.from([ ProtocolType.Instance ]).AddRange(this.Name.Encode()).AddRange(this.Arguments.Encode());
 	}
 
 }

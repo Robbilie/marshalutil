@@ -1,5 +1,5 @@
 const { PyObjectType, PyObject } = require("./");
-const { ProtocolType } = require("./../");
+const { Marshal, ProtocolType } = require("./../");
 
 class PyFloat extends PyObject {
 
@@ -24,6 +24,13 @@ class PyFloat extends PyObject {
 
 	InternalToString (indentLevel = 0) {
 		return `<${this.Value}>`;
+	}
+
+	InternalEncode () {
+		if (this.Value)
+			return Marshal.AsFloat(this.Value);
+		else
+			return Buffer.from([ ProtocolType.FloatEmpty ]);
 	}
 
 }

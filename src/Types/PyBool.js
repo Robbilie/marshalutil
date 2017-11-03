@@ -26,6 +26,10 @@ class PyBool extends PyObject {
 		return `<${this.Value}>`;
 	}
 
+	InternalEncode () {
+		return Buffer.from([ this.Value ? ProtocolType.True : ProtocolType.False ]);
+	}
+
 }
 
 module.exports = PyBool;

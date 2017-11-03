@@ -1,4 +1,4 @@
-const { PyObjectType, PyObject } = require("./");
+const { PyObjectType, PyObject, PyStream } = require("./");
 const { BitConverter, ProtocolType, ProtocolConstants } = require("./../");
 
 class PyString extends PyObject {
@@ -15,8 +15,8 @@ class PyString extends PyObject {
 		if (enc === null)
 			enc = "ascii";
 
-		this.Raw = val instanceof String ? Buffer.from(val, enc) : val;
-		this.Value = val instanceof String ? val : val.toString(enc);
+		this.Raw = val instanceof Buffer ? val : Buffer.from(val, enc);
+		this.Value = val instanceof Buffer ? val.toString(enc) : val;
 	}
 
 	InternalDecode (context, type) {
@@ -29,7 +29,7 @@ class PyString extends PyObject {
 				this.Update(context.GetBytes(1));
 				break;
 			case ProtocolType.UTF16One:
-				this.Update(context.GetBytes(2), "unicode")
+				this.Update(context.GetBytes(2), "utf16le")
 				break;
 			case ProtocolType.String:
 			case ProtocolType.StringLong:
@@ -37,7 +37,7 @@ class PyString extends PyObject {
 				this.Update(context.GetBytes(context.GetLength()));
 				break;
 			case ProtocolType.UTF16:
-				this.Update(context.GetBytes(context.GetLength()), "unicode");
+				this.Update(context.GetBytes(context.GetLength()), "utf16le");
 				break;
 			case ProtocolType.Utf8:
 				this.Update(context.GetBytes(context.GetLength()), "utf8");
@@ -54,9 +54,20 @@ class PyString extends PyObject {
 	InternalToString (indentLevel = 0) {
 		if (this.Value.length <= 0)
 			return "<empty string>";
-		if (this.Value[0].IsLetterOrDigit())
+		if (this.Value[0].IsASCII())
 			return `<${this.Value}>`;
 		return `<${BitConverter.ToString(this.Raw)}>`;
+	}
+
+	InternalEncode () {
+		if (this.Raw.length === 0)
+			return Buffer.from([ ProtocolType.StringEmpty ]);
+		else if (this.Raw.length === 1)
+			return Buffer.from([ ProtocolType.StringOne ]).AddRange(this.Raw);
+		else if (ProtocolConstants.StringTable.indexOf(this.Value) >= 0)
+			return Buffer.from([ ProtocolType.StringTable, ProtocolConstants.StringTable.indexOf(this.Value) ]);
+		else
+			return Buffer.from([ ProtocolType.String, this.Raw.length ]).AddRange(this.Raw);
 	}
 
 }
