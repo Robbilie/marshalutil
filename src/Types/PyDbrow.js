@@ -58,16 +58,12 @@ class PyDbrow extends PyObject {
 			newcolumns.push(new Column(name.Value, fieldData.Items[1].IntValue));
 		}
 
+		this.Columns = newcolumns;
 
-		//console.log(newcolumns)
-
-		let sizeList = newcolumns.sort((a, b) => a.Type === b.Type ? 0 : (FieldTypeHelper.GetTypeBits(a.Type) > FieldTypeHelper.GetTypeBits(b.Type) ? -1 : 1));
-		//console.log(sizeList)
-		//console.log(sizeList.map(c => FieldTypeHelper.GetTypeBits(c.Type)))
+		let sizeList = newcolumns.slice(0).sort((a, b) => a.Type === b.Type ? 0 : (FieldTypeHelper.GetTypeBits(a.Type) > FieldTypeHelper.GetTypeBits(b.Type) ? -1 : 1));
 
 		let sizeSum = newcolumns.reduce((sum, obj) => sum + FieldTypeHelper.GetTypeBits(obj.Type), 0);
-		//console.log(sizeSum)
-		this.Columns = sizeList;
+
 
 		sizeSum = (sizeSum + 7) >> 3;
 

@@ -16,7 +16,7 @@ class PyNewObj extends PyObjectEx {
 	}
 
 	InternalToString (indentLevel = 0) {
-		return `<${this.Type}: ${this.Header.InternalToString(indentLevel)}(${this.List.reduce((str, obj) => str + this.Indent(indentLevel + 1) + obj.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)})(${[...this.Dict.entries()].reduce((str, [key, value]) => str + this.Indent(indentLevel + 1) + "<" + key + ">" + " " + value.InternalToString(indentLevel + 1) + "\n", "")})>`;
+		return `<${this.Type}: ${this.Header.InternalToString(indentLevel)}(\n${this.List.reduce((str, obj) => str + this.Indent(indentLevel + 1) + obj.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)})(${[...this.Dict.entries()].reduce((str, [key, value]) => str + this.Indent(indentLevel + 1) + "<" + key + ">" + " " + value.InternalToString(indentLevel + 1) + "\n", "")})>`;
 	}
 
 }
