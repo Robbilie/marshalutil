@@ -42,6 +42,7 @@ class MarshalStream {
 		if (this._initialized)
 			return this._output;
 
+		/*
 		let saveCount = this.GetInt(4);
 		if (saveCount > 0) {
 			let currentPos = 0;
@@ -53,16 +54,17 @@ class MarshalStream {
 			console.log(this.SavedElementsMap)
 
 		}
-		/*
+		*/
+		
 		const sharedMapSize = this.GetInt(4);
 		if (sharedMapSize > 0) {
 			let sharedMapData = this.Raw.slice(this.Raw.length - sharedMapSize * 4);
 			for (let i = 0; i < sharedMapSize; i++) {
 				let copy = sharedMapData.slice(i * 4, i * 4 + 4);
-				this.StorageMap[i] = BitConverter.ToInt32(copy.SwapEndianness(), 0);
+				this.StorageMap[i] = BitConverter.ToInt32(copy, 0);
 			}
 		}
-		*/
+		
 		this._output = this.ProcessSnip();
 		this._initialized = true;
 		return this._output;
@@ -143,6 +145,7 @@ class MarshalStream {
 				result = this.CreateAndDecode(Types.PyInstance, type);
 				break;
 			case ProtocolType.Ref:
+				/*
 				let index = this.GetByte();
 				//console.log(index)
 				//console.log(this.SavedElements)
@@ -161,12 +164,33 @@ class MarshalStream {
 				}
 				this.NeedObjectEx = false;
 				break;
+				*/
+
+				//console.log(this.Storage)
+				//console.log(this.StorageMap)
+				
+				let index = this.GetByte();
+				//console.log(index)
+				result = this.Storage[index - 1];
+				if (this.NeedObjectEx && !(result instanceof Types.PyObjectEx)) {
+					result = this.Storage[this.StorageMap[index]];
+					if (!(result instanceof Types.PyObjectEx)) {
+						for (let savedObj of Object.values(this.Storage)) {
+							if (savedObj instanceof Types.PyObjectEx) {
+								result = savedObj;
+								break;
+							}
+						}
+					}
+				}
+				this.NeedObjectEx = false;
 				/*
 				result = this.Storage[this.StorageMap[this.GetByte() - 1] - 1];
 				console.log(this.Storage)
 				console.log(this.StorageMap)
-				break;
 				*/
+				break;
+				
 			case ProtocolType.Dict:
 				result = this.CreateAndDecode(Types.PyDict, type);
 				break;
@@ -189,13 +213,15 @@ class MarshalStream {
 				break;
 		}
 
+		/*
 		if (shared) {
 			let nth = this._currentSaveIndex++;
 			let saveIndex = this.SavedElementsMap[nth];
 			this.SavedElements[saveIndex - 1] = result;
 		}
+		*/
 
-		/*
+		
 		if (shared) {
 			let sharedIndex = this.StorageMap[this._currentStorageIndex++];
 			if (sharedIndex === 0)
@@ -203,13 +229,17 @@ class MarshalStream {
 			if (sharedIndex > 0)
 				this.Storage[sharedIndex - 1] = result;
 		}
-		*/
+		
 		return result;
 	}
 
 	CreateAndDecode (T, type) {
 		let obj = new T();
 		obj.Decode(this, type);
+		
+		//console.log("obj");
+		//console.log(obj);
+		//console.log(obj.ToString());
 
 		return obj;
 	}

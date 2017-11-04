@@ -17,18 +17,14 @@ class PyDbrow extends PyObject {
 		this.Header = context.ProcessSnip();
 		context.NeedObjectEx = false;
 
-		console.log(this.Header.Header.ToString())
-
 		this.Raw = this.LoadZeroCompressed(context);
-
-		console.log(this.Raw.toString("hex"))
 
 		if (!this.ParseRowData(context))
 			this.ThrowParseException("Could not fully unpack Dbrow, stream integrity is broken");
+	}
 
-		console.log(this.Columns)
-
-		//process.exit();
+	InternalToString (indentLevel = 0) {
+		return `<Dbrow: ${this.Header.InternalToString(indentLevel)}[\n${this.Columns.reduce((str, obj) => str + this.Indent(indentLevel + 1) + obj.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)}]>`;
 	}
 
 	ParseRowData (context) {
@@ -62,16 +58,16 @@ class PyDbrow extends PyObject {
 			newcolumns.push(new Column(name.Value, fieldData.Items[1].IntValue));
 		}
 
-		this.Columns = newcolumns;
 
-		console.log(newcolumns)
+		//console.log(newcolumns)
 
-		let sizeList = this.Columns.sort((a, b) => a.Type === b.Type ? 0 : (FieldTypeHelper.GetTypeBits(a.Type) > FieldTypeHelper.GetTypeBits(b.Type) ? -1 : 1));
-		console.log(sizeList)
-		console.log(sizeList.map(c => FieldTypeHelper.GetTypeBits(c.Type)))
+		let sizeList = newcolumns.sort((a, b) => a.Type === b.Type ? 0 : (FieldTypeHelper.GetTypeBits(a.Type) > FieldTypeHelper.GetTypeBits(b.Type) ? -1 : 1));
+		//console.log(sizeList)
+		//console.log(sizeList.map(c => FieldTypeHelper.GetTypeBits(c.Type)))
 
-		let sizeSum = this.Columns.reduce((sum, obj) => sum + FieldTypeHelper.GetTypeBits(obj.Type), 0);
-		console.log(sizeSum)
+		let sizeSum = newcolumns.reduce((sum, obj) => sum + FieldTypeHelper.GetTypeBits(obj.Type), 0);
+		//console.log(sizeSum)
+		this.Columns = sizeList;
 
 		sizeSum = (sizeSum + 7) >> 3;
 

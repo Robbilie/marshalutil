@@ -14,6 +14,10 @@ class PyReduce extends PyObjectEx {
 		super.InternalDecode(context, type);
 	}
 
+	InternalToString (indentLevel = 0) {
+		return `<Reduce: ${this.Header.Type} (${this.Header.InternalToString(indentLevel)})>`;
+	}
+
 }
 
 module.exports = PyReduce;

@@ -38,7 +38,7 @@ class PyObject {
 		return `<${this.Type}>`;
 	}
 
-	Indent (indentLevel = 0, indentChar = '\t') {
+	Indent (indentLevel = 0, indentChar = '  ' || '\t') {
 		return indentChar.repeat((indentLevel > 0 ? indentLevel : 0) * 1);
 	}
 

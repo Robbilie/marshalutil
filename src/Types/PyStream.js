@@ -25,7 +25,7 @@ class PyStream extends PyObject {
 	}
 
 	InternalToString (indentLevel = 0) {
-		return `<Stream: ${this.Content.ToString(indentLevel + 1)}>`;
+		return `<Stream: ${this.Content.InternalToString(indentLevel)}>`;
 	}
 
 	InternalEncode () {

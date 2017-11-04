@@ -5,6 +5,10 @@ class Column {
 		this.Type = type;
 		this.Value = value;
 	}
+
+	InternalToString (indentLevel) {
+		return `${this.Value.InternalToString(indentLevel + 1)}`;
+	}
 	
 }
 

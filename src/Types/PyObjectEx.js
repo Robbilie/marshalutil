@@ -27,7 +27,6 @@ class PyObjectEx extends PyObject {
 			this.Dict.set(context.ProcessSnip(), context.ProcessSnip());
 		}
 
-		//console.log("PyObjectEx", this);
 	}
 
 }
