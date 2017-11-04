@@ -7,7 +7,7 @@ class Column {
 	}
 
 	InternalToString (indentLevel) {
-		return `${this.Value.InternalToString(indentLevel + 1)}`;
+		return `${this.Name}: ${this.Value.InternalToString(indentLevel + 1)}`;
 	}
 	
 }

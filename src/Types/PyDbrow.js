@@ -19,6 +19,8 @@ class PyDbrow extends PyObject {
 
 		this.Raw = this.LoadZeroCompressed(context);
 
+		console.log(this.Raw.toString("hex"))
+
 		if (!this.ParseRowData(context))
 			this.ThrowParseException("Could not fully unpack Dbrow, stream integrity is broken");
 	}
@@ -58,12 +60,22 @@ class PyDbrow extends PyObject {
 			newcolumns.push(new Column(name.Value, fieldData.Items[1].IntValue));
 		}
 
-		this.Columns = newcolumns;
+		let groups = [];
+		newcolumns.forEach(column => {
+			let bits = FieldTypeHelper.GetTypeBits(column.Type);
+			if (!groups[bits])
+				groups[bits] = [];
+			groups[bits].push(column);
+		});
 
-		let sizeList = newcolumns.slice(0).sort((a, b) => a.Type === b.Type ? 0 : (FieldTypeHelper.GetTypeBits(a.Type) > FieldTypeHelper.GetTypeBits(b.Type) ? -1 : 1));
+		let sizeList = [];
+		groups.reverse().forEach(group => sizeList = sizeList.concat(group));
 
 		let sizeSum = newcolumns.reduce((sum, obj) => sum + FieldTypeHelper.GetTypeBits(obj.Type), 0);
 
+		this.Columns = sizeList;
+
+		console.log(sizeList)
 
 		sizeSum = (sizeSum + 7) >> 3;
 
@@ -104,7 +116,6 @@ class PyDbrow extends PyObject {
 				return val;
 			},
 		}
-
 
 		let bitOffset = 0;
 		for (let column of sizeList) {
