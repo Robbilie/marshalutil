@@ -4,10 +4,10 @@ const Types = require("./");
 
 class PyInstance extends PyObject {
 
-	constructor (name, args) {
+	constructor (name, args = []) {
 		super(PyObjectType.Instance);
-		this.Name = name;
-		this.Arguments = args;
+		this.Name = this.From(name);
+		this.Arguments = this.From(args instanceof Array ? args.map(this.From) : args);
 	}
 
 	InternalDecode (context, type) {

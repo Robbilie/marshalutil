@@ -1,8 +1,5 @@
 require("./StringExtender");
-const ProtocolConstants = require("./ProtocolConstants");
-const ProtocolType = require("./ProtocolType");
-const BitConverter = require("./BitConverter");
-const Zlib = require("./Zlib");
+const { ProtocolConstants, ProtocolType, BitConverter, Zlib, InstanceHelper } = require("./");
 const Types = require("./Types");
 
 class MarshalStream {
@@ -143,34 +140,10 @@ class MarshalStream {
 				break;
 			case ProtocolType.Instance:
 				result = this.CreateAndDecode(Types.PyInstance, type);
+				result = InstanceHelper.FromPyInstance(result);
 				break;
 			case ProtocolType.Ref:
-				/*
 				let index = this.GetByte();
-				//console.log(index)
-				//console.log(this.SavedElements)
-				//console.log(this.SavedElementsMap)
-				result = this.SavedElements[index - 1];
-				if (this.NeedObjectEx && !(result instanceof Types.PyObjectEx)) {
-					result = this.SavedElements[this.SavedElementsMap[index]];
-					if (!(result instanceof Types.PyObjectEx)) {
-						for (let savedObj of Object.values(this.SavedElements)) {
-							if (savedObj instanceof Types.PyObjectEx) {
-								result = savedObj;
-								break;
-							}
-						}
-					}
-				}
-				this.NeedObjectEx = false;
-				break;
-				*/
-
-				//console.log(this.Storage)
-				//console.log(this.StorageMap)
-				
-				let index = this.GetByte();
-				//console.log(index)
 				result = this.Storage[index - 1];
 				if (this.NeedObjectEx && !(result instanceof Types.PyObjectEx)) {
 					result = this.Storage[this.StorageMap[index]];
@@ -184,11 +157,6 @@ class MarshalStream {
 					}
 				}
 				this.NeedObjectEx = false;
-				/*
-				result = this.Storage[this.StorageMap[this.GetByte() - 1] - 1];
-				console.log(this.Storage)
-				console.log(this.StorageMap)
-				*/
 				break;
 				
 			case ProtocolType.Dict:

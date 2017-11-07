@@ -58,6 +58,33 @@ class Marshal {
 		}
 	}
 
+	static ToPyObject (value) {
+		if (value === undefined || value instanceof Types.PyObject)
+			return value;
+		if (value === null)
+			return new Types.PyNone();
+		switch (value.constructor.name) {
+			case "Number":
+				if (value % 1 == 0)
+					return new Types.PyInt(value);
+				else
+					return new Types.PyFloat(value);
+			case "Boolean":
+				return new Types.PyBool(value);
+			case "String":
+				return new Types.PyBuffer(value);
+			case "Array":
+				return new Types.PyTuple(value);
+			case "Object":
+				value = new Map(Object.entries(value));
+			case "Map":
+				return new Types.PyDict(value);
+			default:
+				console.log(value);
+				throw Error(`Wat ${value}`);
+		}
+	}
+
 }
 
 module.exports = Marshal;

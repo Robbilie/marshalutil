@@ -5,7 +5,7 @@ class PyTuple extends PyObject {
 
 	constructor (items = []) {
 		super(PyObjectType.Tuple);
-		this.Items = items;
+		this.Items = items.map(this.From);
 	}
 
 	InternalDecode (context, type) {

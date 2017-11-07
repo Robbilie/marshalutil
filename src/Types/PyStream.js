@@ -5,8 +5,10 @@ class PyStream extends PyObject {
 
 	constructor (data) {
 		super(PyObjectType.Stream);
-		if (data)
-		this.Stream = new MarshalStream(ProtocolConstants.PacketHeader.AddRange(data instanceof Buffer ? data : data.Encode()));
+		if (data) {
+			data = this.From(data);
+			this.Stream = new MarshalStream(ProtocolConstants.PacketHeader.AddRange(data instanceof Buffer ? data : data.Encode()));
+		}
 	}
 
 	get Raw () {

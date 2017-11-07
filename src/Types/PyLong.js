@@ -26,6 +26,12 @@ class PyLong extends PyObject {
 		return `<${this.Value}>`;
 	}
 
+	InternalEncode () {
+		let buf = Buffer.alloc(8);
+		buf.writeIntLE(this.Value, 0, 8);
+		return Buffer.from([ ProtocolType.Long, buf.length ]).AddRange(buf);
+	}
+
 }
 
 module.exports = PyLong;

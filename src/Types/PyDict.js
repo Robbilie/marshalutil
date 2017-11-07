@@ -5,7 +5,7 @@ class PyDict extends PyObject {
 
 	constructor (dict = new Map()) {
 		super(PyObjectType.Dictionary);
-		this.Dict = dict;
+		this.Dict = new Map([...dict.entries()].map(([key, value]) => [this.From(key), this.From(value)]));
 	}
 
 	InternalDecode (context, type) {

@@ -1,3 +1,4 @@
+const { Marshal } = require("./../");
 const Types = require("./");
 
 class PyObject {
@@ -59,6 +60,10 @@ class PyObject {
 			return this.Value;
 
 		throw new Error(`InvalidOperationException: Unable to parse ${this.GetType()} as integer`);
+	}
+
+	From (value) {
+		return Marshal.ToPyObject(value);
 	}
 
 }

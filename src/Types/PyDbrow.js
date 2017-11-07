@@ -19,14 +19,19 @@ class PyDbrow extends PyObject {
 
 		this.Raw = this.LoadZeroCompressed(context);
 
-		console.log(this.Raw.toString("hex"))
-
 		if (!this.ParseRowData(context))
 			this.ThrowParseException("Could not fully unpack Dbrow, stream integrity is broken");
 	}
 
 	InternalToString (indentLevel = 0) {
-		return `<Dbrow: ${this.Header.InternalToString(indentLevel)}[\n${this.Columns.reduce((str, obj) => str + this.Indent(indentLevel + 1) + obj.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)}]>`;
+		return `<Dbrow: ${" " || this.Header.InternalToString(indentLevel)}[\n${this.Columns.reduce((str, obj) => str + this.Indent(indentLevel + 1) + obj.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)}]>`;
+	}
+
+	get (columnName) {
+		if (!this._map) {
+			this._map = new Map(this.Columns.map(column => [column.Name, column.Value]));
+		}
+		return this._map.get(columnName);
 	}
 
 	ParseRowData (context) {
@@ -74,8 +79,6 @@ class PyDbrow extends PyObject {
 		let sizeSum = newcolumns.reduce((sum, obj) => sum + FieldTypeHelper.GetTypeBits(obj.Type), 0);
 
 		this.Columns = sizeList;
-
-		console.log(sizeList)
 
 		sizeSum = (sizeSum + 7) >> 3;
 

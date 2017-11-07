@@ -87,6 +87,7 @@ const tests = [
 	function AdvancedTest () {
 		let lines = require("fs").readFileSync(require("path").join(__dirname, "testdata.txt")).toString().split("\n");
 
+		let errors = [];
 		for (let line of lines) {
 			let ms = new MarshalStream(Buffer.from(line, "hex"));
 
@@ -96,9 +97,12 @@ const tests = [
 				console.log(lines.indexOf(line) + 1, "/", lines.length);
 			} catch (e) {
 				console.log("failed to parse line:", line);
-				throw e;
+				//throw e;
+				errors.push(e);
 			}
 		}
+		console.log("Finished with errors:", errors.length);
+		console.log(errors);
 	}
 ];
 
