@@ -14,6 +14,10 @@ class PyCallback extends PyObject {
 		this.Definition = context.ProcessSnip();
 	}
 
+	InternalToString (indentLevel = 0) {
+		return `<${this.Type}: ${this.Definition.InternalToString(indentLevel)}>`;
+	}
+
 }
 
 module.exports = PyCallback;

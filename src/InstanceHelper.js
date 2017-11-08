@@ -9,7 +9,7 @@ class InstanceHelper {
 			return obj;
 		} else {
 			const t = new T();
-				t.state = obj.Arguments.Items;
+			t.state = obj.Arguments.Items;
 			return t;
 		}
 	}

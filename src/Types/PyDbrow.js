@@ -94,12 +94,12 @@ class PyDbrow extends PyObject {
 				return val;
 			},
 			ReadInt32 () {
-				let val = this.BaseStream.readUInt32LE(this.index);
+				let val = this.BaseStream.readInt32LE(this.index);
 				this.index += 4;
 				return val;
 			},
 			ReadInt16 () {
-				let val = this.BaseStream.readUInt32LE(this.index);
+				let val = this.BaseStream.readUInt16LE(this.index);
 				this.index += 2;
 				return val;
 			},

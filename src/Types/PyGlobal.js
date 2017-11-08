@@ -1,7 +1,7 @@
 const { PyObjectType, PyObject } = require("./");
 const { ProtocolType, MarshalStream } = require("./../")
 
-class PyReduce extends PyObject {
+class PyGlobal extends PyObject {
 
 	constructor (data, enc = null) {
 		super(PyObjectType.Global);
@@ -37,4 +37,4 @@ class PyReduce extends PyObject {
 
 }
 
-module.exports = PyReduce;
+module.exports = PyGlobal;
