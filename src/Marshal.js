@@ -65,10 +65,14 @@ class Marshal {
 			return new Types.PyNone();
 		switch (value.constructor.name) {
 			case "Number":
-				if (value % 1 == 0)
-					return new Types.PyInt(value);
-				else
+				if (value % 1 == 0) {
+					if (value > 4294967296)
+						return new Types.PyLong(value);
+					else
+						return new Types.PyInt(value);
+				} else {
 					return new Types.PyFloat(value);
+				}
 			case "Boolean":
 				return new Types.PyBool(value);
 			case "String":

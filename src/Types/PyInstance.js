@@ -15,15 +15,16 @@ class PyInstance extends PyObject {
 			this.ThrowParseException();
 
 		let nameObj = context.ProcessSnip();
-		if (!(nameObj instanceof Types.PyString))
+		if (!(nameObj instanceof Types.PyString)) {
 			this.ThrowParseException("Expected PyString!");
+		}
 
-		this.Name = nameObj.Value;
+		this.Name = nameObj;
 		this.Arguments = context.ProcessSnip();
 	}
 
 	InternalToString (indentLevel = 0) {
-		return `<${this.Type}: ${this.Name}(${this.Arguments.InternalToString(indentLevel)})>`;
+		return `<${this.Type}: ${this.Name.Value}(${this.Arguments.InternalToString(indentLevel)})>`;
 	}
 
 	InternalEncode () {

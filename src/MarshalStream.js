@@ -14,7 +14,6 @@ class MarshalStream {
 		this.Storage = {};
 		this._currentStorageIndex = 0;
 
-
 		this.NeedObjectEx = false;
 		this.SavedElements = {};
 		this.SavedElementsMap = {};
@@ -144,9 +143,9 @@ class MarshalStream {
 				break;
 			case ProtocolType.Ref:
 				let index = this.GetByte();
-				result = this.Storage[index - 1];
+				result = this.Storage[index - 1] || this.Storage[this.StorageMap[index - 1] - 1];
 				if (this.NeedObjectEx && !(result instanceof Types.PyObjectEx)) {
-					result = this.Storage[this.StorageMap[index]];
+					//result = this.Storage[this.StorageMap[index - 1] - 1];
 					if (!(result instanceof Types.PyObjectEx)) {
 						for (let savedObj of Object.values(this.Storage)) {
 							if (savedObj instanceof Types.PyObjectEx) {
@@ -171,24 +170,13 @@ class MarshalStream {
 			case ProtocolType.Dbrow:
 				result = this.CreateAndDecode(Types.PyDbrow, type);
 				break;
-			// ReSharper disable RedundantCaseLabel
 			case ProtocolType.Blue:
 			case ProtocolType.Pickler:
 			case ProtocolType.EOF:
-			// ReSharper restore RedundantCaseLabel
 			default:
 				console.log("TYPE " + type + " OFF " + this.Index);
 				break;
 		}
-
-		/*
-		if (shared) {
-			let nth = this._currentSaveIndex++;
-			let saveIndex = this.SavedElementsMap[nth];
-			this.SavedElements[saveIndex - 1] = result;
-		}
-		*/
-
 		
 		if (shared) {
 			let sharedIndex = this.StorageMap[this._currentStorageIndex++];

@@ -3,9 +3,9 @@ const nameToClass = new Map();
 class InstanceHelper {
 
 	static FromPyInstance (obj) {
-		const T = nameToClass.get(obj.Name);
+		const T = nameToClass.get(obj.Name.Value);
 		if (!T) {
-			console.warn(`No class found for PyInstance '${obj.Name}'`);
+			console.warn(`No class found for PyInstance '${obj.Name.Value}'`);
 			return obj;
 		} else {
 			const t = new T();
