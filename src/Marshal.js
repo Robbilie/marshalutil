@@ -85,7 +85,7 @@ class Marshal {
 				return new Types.PyDict(value);
 			default:
 				console.log(value);
-				throw Error(`Wat ${value}`);
+				throw Error(`Wat ${value.constructor.name}`);
 		}
 	}
 
