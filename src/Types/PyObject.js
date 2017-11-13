@@ -66,6 +66,10 @@ class PyObject {
 		return Marshal.ToPyObject(value);
 	}
 
+	ToNative () {
+		return Marshal.ToNativeType(this);
+	}
+
 }
 
 module.exports = PyObject;

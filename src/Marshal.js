@@ -89,6 +89,17 @@ class Marshal {
 		}
 	}
 
+	static ToNativeType (value) {
+		if (value === null || value === undefined || !(value instanceof Types.PyObject))
+			return value;
+		if (value.Value !== undefined)
+			return value.Value;
+		if (value.Items)
+			return value.Items.map(e => Marshal.ToNativeType(e));
+		if (value.Dict)
+			return [...this.Dict.entries()].reduce((obj, [key, value]) => { obj[key] = Marshal.ToNativeType(value); return obj; }, {});
+	}
+
 }
 
 module.exports = Marshal;

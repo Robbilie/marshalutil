@@ -5,6 +5,7 @@ class PyNone extends PyObject {
 
 	constructor (val) {
 		super(PyObjectType.None);
+		this.Value = null;
 	}
 
 	InternalDecode (context, type) {
