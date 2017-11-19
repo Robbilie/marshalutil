@@ -142,7 +142,8 @@ class MarshalStream {
 				result = InstanceHelper.FromPyInstance(result);
 				break;
 			case ProtocolType.Ref:
-				let index = this.GetByte();
+				//let index = this.GetByte();
+				let index = this.GetLength();
 				result = this.Storage[index - 1] || this.Storage[this.StorageMap[index - 1] - 1];
 				if (this.NeedObjectEx && !(result instanceof Types.PyObjectEx)) {
 					//result = this.Storage[this.StorageMap[index - 1] - 1];
