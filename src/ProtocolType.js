@@ -31,7 +31,7 @@ const ProtocolType = {
 	False		 : 0x20, // 32: False
 	Pickler		 : 0x21, // 33: standard pickle of undetermined size
 	Reduce		 : 0x22, // 34: reduce protocol
-	Newobj		 : 0x23, // 35: new style class object
+	NewObj		 : 0x23, // 35: new style class object
 	TupleEmpty	 : 0x24, // 36: tuple, empty
 	TupleOne	 : 0x25, // 37: tuple, single element
 	ListEmpty	 : 0x26, // 38: list, empty

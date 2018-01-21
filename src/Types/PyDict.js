@@ -5,7 +5,8 @@ class PyDict extends PyObject {
 
 	constructor (dict = new Map()) {
 		super(PyObjectType.Dictionary);
-		this.Dict = new Map([...dict.entries()].map(([key, value]) => [this.From(key), this.From(value)]));
+		this.Dict = new Map([...(dict instanceof Map ? dict.entries() : Object.entries(dict))]
+			.map(([key, value]) => [this.From(key), this.From(value)]));
 	}
 
 	InternalDecode (context, type) {
@@ -24,7 +25,7 @@ class PyDict extends PyObject {
 	}
 
 	InternalToString (indentLevel = 0) {
-		return `<\n${[...this.Dict.entries()].reduce((str, [key, value]) => str + this.Indent(indentLevel + 1) + "<" + key + ">" + " " + value.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)}>`;
+		return `<\n${[...this.Dict.entries()].reduce((str, [key, value]) => str + this.Indent(indentLevel + 1) + "<" + (key.Value ? key.Value : key) + ">" + " " + value.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)}>`;
 		//return `<\n${[...this.Dict.entries()].reduce((str, [key, value]) => str + this.Indent(indentLevel + 1) + key.ToString() + " " + value.InternalToString(indentLevel + 1) + "\n", "")}${this.Indent(indentLevel)}>`;
 	}
 
@@ -35,7 +36,7 @@ class PyDict extends PyObject {
 		this.Dict.forEach((value, key) => {
 			marshalled = marshalled
 				.AddRange(value.Encode())
-				.AddRange(key.Encode());
+				.AddRange((key instanceof PyObject ? key : this.From(key)).Encode());
 		});
 		return marshalled;
 	}

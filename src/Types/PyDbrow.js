@@ -5,8 +5,17 @@ const { Column, ZeroCompressOpcode, FieldTypeHelper } = require("../Database/");
 
 class PyDbrow extends PyObject {
 
-	constructor () {
+	constructor (header = null, values) {
 		super(PyObjectType.Dbrow);
+		if (header != null) {
+			this.Header = header;
+			console.log(this.Header.Header.Items[1])
+			this.Columns = this.Header.Header.Items[1].Items[0].map((col, i) => {
+				let column = new Column(col.Items[0].Value, col.Items[1].Value);
+				column.Value = this.From(values[i]);
+				return column;
+			});
+		}
 	}
 
 	InternalDecode (context, type) {
@@ -114,7 +123,7 @@ class PyDbrow extends PyObject {
 				return val;
 			},
 			ReadSingle () {
-				let val = this.BaseStream.readInt32LE(this.index);
+				let val = this.BaseStream.readFloatLE(this.index);
 				this.index += 4;
 				return val;
 			},

@@ -17,13 +17,17 @@ class PyString extends PyObject {
 
 		this.Raw = val instanceof Buffer ? val : Buffer.from(val, enc);
 		this.Value = val instanceof Buffer ? val.toString(enc) : val;
+
+
+		if (!this.Value.IsASCII())
+			this.Value = this.Raw;
 	}
 
 	InternalDecode (context, type) {
 		switch (type) {
 			case ProtocolType.StringEmpty:
 			case ProtocolType.UTF16Empty:
-				this.Update(new Buffer(0));
+				this.Update(Buffer.alloc(0));
 				break;
 			case ProtocolType.StringOne:
 				this.Update(context.GetBytes(1));
@@ -54,9 +58,9 @@ class PyString extends PyObject {
 	InternalToString (indentLevel = 0) {
 		if (this.Value.length <= 0)
 			return "<empty string>";
-		if (this.Value[0].IsASCII())
+		if (typeof(this.Value) === "string")
 			return `<${this.Value}>`;
-		return `<${BitConverter.ToString(this.Raw)}>`;
+		return `<${this.Value.toString("hex")}>`;
 	}
 
 	InternalEncode () {

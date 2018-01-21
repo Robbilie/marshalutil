@@ -84,6 +84,9 @@ class Marshal {
 			case "Map":
 				return new Types.PyDict(value);
 			default:
+				if (value.__guid__) {
+					return value.state;
+				}
 				console.log(value);
 				throw Error(`Wat ${value.constructor.name}`);
 		}
@@ -97,7 +100,11 @@ class Marshal {
 		if (value.Items)
 			return value.Items.map(e => Marshal.ToNativeType(e));
 		if (value.Dict)
-			return [...this.Dict.entries()].reduce((obj, [key, value]) => { obj[key] = Marshal.ToNativeType(value); return obj; }, {});
+			return [...value.Dict.entries()].reduce((obj, [key, value]) => { obj[key] = Marshal.ToNativeType(value); return obj; }, {});
+		if (value.Content)
+			return Marshal.ToNativeType(value.Content);
+		if (value.Arguments) // PyInstance, shouldnt be done but vOv
+			return value;
 	}
 
 }

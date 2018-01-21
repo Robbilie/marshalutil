@@ -6,8 +6,11 @@ class PyInstance extends PyObject {
 
 	constructor (name, args = []) {
 		super(PyObjectType.Instance);
-		this.Name = this.From(name);
-		this.Arguments = this.From(args instanceof Array ? args.map(this.From) : args);
+		if (name !== undefined) {
+			this.Name = this.From(name);
+			this.Arguments = this.From(args);
+			//this.Arguments = this.From(args instanceof Array ? args.map(this.From) : args);
+		}
 	}
 
 	InternalDecode (context, type) {
@@ -29,6 +32,10 @@ class PyInstance extends PyObject {
 
 	InternalEncode () {
 		return Buffer.from([ ProtocolType.Instance ]).AddRange(this.Name.Encode()).AddRange(this.Arguments.Encode());
+	}
+
+	set state (state) {
+		throw "You cant set a PyInstance state";
 	}
 
 }

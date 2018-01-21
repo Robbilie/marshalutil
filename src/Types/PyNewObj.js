@@ -1,15 +1,23 @@
-const { PyObjectType, PyObjectEx } = require("./");
+const { PyObjectType, PyObjectEx, PyGlobal, PyTuple, PyDict } = require("./");
 const { ProtocolType } = require("./../");
 const Types = require("./");
 
 class PyNewObj extends PyObjectEx {
 
-	constructor () {
+	constructor (className = null, kwargs, list = [], dict = {}) {
 		super(PyObjectType.NewObj);
+		if (className != null) {
+			this.Header = this.From([
+				[ new PyGlobal(className) ],
+				new PyDict(kwargs),
+			]);
+			this.List = new PyTuple(list).Items;
+			this.Dict = new PyDict(dict).Dict;
+		}
 	}
 
 	InternalDecode (context, type) {
-		if (type !== ProtocolType.Newobj)
+		if (type !== ProtocolType.NewObj)
 			this.ThrowParseException();
 
 		super.InternalDecode(context, type);

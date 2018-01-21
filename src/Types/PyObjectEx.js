@@ -29,6 +29,24 @@ class PyObjectEx extends PyObject {
 
 	}
 
+	InternalEncode () {
+		let marshalled = Buffer.from([ ProtocolType[this.Type] ]).AddRange(this.Header.Encode());
+		//if (this.List.length == 0) {
+		//} else {
+			this.List.forEach(item => {
+				marshalled = marshalled.AddRange(item.Encode());
+			});
+			marshalled = marshalled.Add( ProtocolType.Mark );
+			//throw new Error("wwwwwwwwwwaaaaaa");
+		//}
+		if (this.Dict.size == 0) {
+			marshalled = marshalled.Add( ProtocolType.Mark );
+		} else {
+			throw new Error("wwwwwwwwwwaaaaaa");
+		}
+		return marshalled;
+	}
+
 }
 
 module.exports = PyObjectEx;

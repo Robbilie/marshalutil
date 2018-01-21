@@ -45,6 +45,7 @@ Object.defineProperty(String.prototype, 'IsLetterOrDigit', {
 
 Object.defineProperty(String.prototype, 'IsASCII', {
 	value: function () {
+		return /^[\x00-\x7F]*$/.test(this);
 		const charCode = this.charCodeAt(0);
 		return (charCode >= 0x20 && charCode <= 0x7e);
 	}

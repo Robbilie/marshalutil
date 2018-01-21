@@ -125,7 +125,7 @@ class MarshalStream {
 			case ProtocolType.Reduce:
 				result = this.CreateAndDecode(Types.PyReduce, type);
 				break;
-			case ProtocolType.Newobj:
+			case ProtocolType.NewObj:
 				result = this.CreateAndDecode(Types.PyNewObj, type);
 				break;
 			case ProtocolType.Mark:
@@ -175,7 +175,7 @@ class MarshalStream {
 			case ProtocolType.Pickler:
 			case ProtocolType.EOF:
 			default:
-				console.log("TYPE " + type + " OFF " + this.Index);
+				throw ("TYPE " + type + " OFF " + this.Index);
 				break;
 		}
 		

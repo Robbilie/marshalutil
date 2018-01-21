@@ -5,7 +5,7 @@ class PyList extends PyObject {
 
 	constructor (items = []) {
 		super(PyObjectType.List);
-		this.Items = items.map(this.From);
+		this.Items = items.map(item => this.From(item));
 	}
 
 	InternalDecode (context, type) {
