@@ -1,0 +1,22 @@
+{
+  "name": "marshalutil",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Robbilie/marshalutil.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Robbilie/marshalutil/issues"
+  },
+  "homepage": "https://github.com/Robbilie/marshalutil#readme",
+  "devDependencies": {
+    "jest": "^22.1.4"
+  }
+}
