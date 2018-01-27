@@ -84,8 +84,8 @@ class Marshal {
 			case "Map":
 				return new Types.PyDict(value);
 			default:
-				if (value.__guid__) {
-					return value.state;
+				if (value.__guid__ && value.__base__) {
+					return new value.__base__(value.__guid__, value.state);
 				}
 				console.log(value);
 				throw Error(`Wat ${value.constructor.name}`);
