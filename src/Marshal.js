@@ -22,7 +22,7 @@ class Marshal {
         data = this.handleCompression(data);
         if (data[0] !== ProtocolConstants.ProtocolId)
             throw new Error("ArgumentException: Invalid stream header");
-        return data;
+        return data.slice(1);
     }
 
 }

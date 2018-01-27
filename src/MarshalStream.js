@@ -1,9 +1,11 @@
 "use strict";
 
-const { Marshal, StreamBuffer, GROUPS, TYPES } = require("./");
+const { ProtocolConstants, Marshal, StreamBuffer, MarshalStorage, groups, TYPES } = require("./");
+
+const GROUPS = [...groups];
 
 class MarshalStream {
-/*
+
     constructor (buffer) {
         this._initialized = false;
         this._output = null;
@@ -13,14 +15,14 @@ class MarshalStream {
     }
 
     createStream (buffer) {
-        const data = MarshalStreamValidator.validate(buffer);
+        const data = Marshal.validate(buffer);
         return new StreamBuffer(data);
     }
 
     setupStorage () {
         const size = this.getInt(4);
-        const data = this.getStream().slice(size);
-        return new Storage(size, data);
+        const data = this.getStream().slice(-(size * 4));
+        return new MarshalStorage(size, data);
     }
 
     get value () {
@@ -89,7 +91,7 @@ class MarshalStream {
     getStorage () {
         return this._storage;
     }
-*/
+
 }
 
 module.exports = MarshalStream;

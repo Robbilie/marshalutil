@@ -1,9 +1,9 @@
 "use strict";
 
-const { MarshalStream } = require("./");
+const { MarshalStream, ProtocolConstants } = require("./");
 
 test("initialize a new instance with no content", () => {
-    const data = Buffer.from([ 0x7e, 0x00, 0x00, 0x00, 0x00 ]);
+    const data = ProtocolConstants.PacketHeader;
     const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(undefined);
+    expect(() => stream.value).toThrow();
 });

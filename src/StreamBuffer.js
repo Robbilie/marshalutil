@@ -23,8 +23,8 @@ class StreamBuffer {
         return this._buffer;
     }
 
-    slice (start) {
-        return this.getBuffer().slice(start);
+    slice (...args) {
+        return this.getBuffer().slice(...args);
     }
 
     readUInt32LE () {
