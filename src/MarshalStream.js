@@ -1,5 +1,7 @@
 "use strict";
 
+const { Marshal, StreamBuffer, GROUPS, TYPES } = require("./");
+
 class MarshalStream {
 /*
     constructor (buffer) {
