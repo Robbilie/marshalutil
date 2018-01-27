@@ -32,7 +32,7 @@ class MarshalStorage {
     }
 
     get (index) {
-        return this._storage[index - 1] || this._storage[this._map[index - 1] - 1];
+        return this._storage[index] || this._storage[this._map[index]];
     }
 
     getMap () {
