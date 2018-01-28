@@ -1,21 +1,4 @@
 
-class Group {
-
-	static getDecoder () {
-		throw new Error("NotImplementedException");
-	}
-
-}
-
-class NoneGroup extends Group {
-
-	static getDecoder (opcode) {
-		if (opcode === ProtocolType.None)
-			return TYPES.PyNone;
-	}
-
-}
-
 class BooleanGroup extends Group {
 
 	static getDecoder (opcode) {
@@ -46,13 +29,6 @@ const GROUPS = [
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class PyObject {
-
-	decode () {
-		throw new Error("NotImplementedException");
-	}
-
-}
 
 class RefObject {
 
@@ -68,14 +44,6 @@ class RefObject {
 				return obj;
 			}
 		}
-	}
-
-}
-
-class PyNone extends PyObject {
-
-	decode () {
-		return null;
 	}
 
 }

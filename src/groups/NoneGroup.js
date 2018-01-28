@@ -6,9 +6,13 @@ const { PyNone } = require("../types/");
 
 class NoneGroup extends Group {
 
-    static getDecoder (opcode) {
+    static isDecoder (opcode) {
         if (opcode === ProtocolType.None)
-            return PyNone;
+            return true;
+    }
+
+    static getDecoder () {
+        return PyNone;
     }
 
 }

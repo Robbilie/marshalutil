@@ -1,8 +1,7 @@
 "use strict";
 
-const { ProtocolConstants, Marshal, StreamBuffer, MarshalStorage, groups, TYPES } = require("./");
-
-const GROUPS = [...groups];
+const { ProtocolConstants, Marshal, StreamBuffer, MarshalStorage } = require("./");
+const GROUPS = [...require("./groups/")];
 
 class MarshalStream {
 
@@ -47,7 +46,8 @@ class MarshalStream {
     }
 
     getDecoder (opcode) {
-        return GROUPS.find(processor => processor.getDecoder(opcode));
+        const group = GROUPS.find(processor => processor.isDecoder(opcode));
+        return group.getDecoder();
     }
 
     decode (T, opcode) {

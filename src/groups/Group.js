@@ -2,8 +2,12 @@
 
 class Group {
 
+    static isDecoder () {
+        return false;
+    }
+
     static getDecoder () {
-        //throw new Error("NotImplementedException");
+        throw new Error("NotImplementedException");
     }
 
 }
