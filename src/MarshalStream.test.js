@@ -116,3 +116,21 @@ test("float 0.5", () => {
     const stream = new MarshalStream(data);
     expect(stream.value).toEqual(input);
 });
+
+test("UInt64 1234567890", () => {
+    const input = 1234567890;
+    const buffer = Buffer.alloc(8);
+    buffer.writeUIntLE(input, 0, 8);
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.Int64 ]), buffer);
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual(input);
+});
+
+test("long 1234567890", () => {
+    const input = 1234567890;
+    const buffer = Buffer.alloc(8);
+    buffer.writeUIntLE(input, 0, 8);
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.Long, buffer.length ]), buffer);
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual(input);
+});
