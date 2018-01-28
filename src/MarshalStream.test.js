@@ -67,3 +67,21 @@ test("0xffffffff content, int32", () => {
     const stream = new MarshalStream(data);
     expect(stream.value).toEqual(0xffffffff);
 });
+
+test("empty string content, StringEmpty", () => {
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.StringEmpty ]));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual("");
+});
+
+test("empty string content, UTF16Empty", () => {
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.UTF16Empty ]));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual("");
+});
+
+test("StringTable content, '*corpid' 0x5d", () => {
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.StringTable, 0x01 ]));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual("*corpid");
+});
