@@ -61,9 +61,9 @@ test("0xffff content, int16", () => {
 });
 
 test("0xffffffff content, int32", () => {
-    const buf = Buffer.alloc(4);
-    buf.writeUInt32LE(0xffffffff);
-    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.Int32 ]), buf);
+    const buffer = Buffer.alloc(4);
+    buffer.writeUInt32LE(0xffffffff);
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.Int32 ]), buffer);
     const stream = new MarshalStream(data);
     expect(stream.value).toEqual(0xffffffff);
 });
@@ -84,4 +84,21 @@ test("StringTable content, '*corpid' 0x5d", () => {
     const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.StringTable, 0x01 ]));
     const stream = new MarshalStream(data);
     expect(stream.value).toEqual("*corpid");
+});
+
+test("string content, test", () => {
+    const buffer = Buffer.from("test", "utf8");
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.String, buffer.length ]), buffer);
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual("test");
+});
+
+test("string long content, >256 ", () => {
+    const test = "hjaskdfhlkajsdhfljashdlfjkasd";
+    const buffer = Buffer.from(test, "utf8");
+    const length = Buffer.alloc(4);
+    length.writeUInt32LE(test.length);
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.String, 0xff ]), length, buffer);
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual(test);
 });
