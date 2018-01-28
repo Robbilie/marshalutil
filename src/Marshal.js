@@ -1,6 +1,6 @@
 "use strict";
 
-const { ProtocolConstants, Zlib } = require("./");
+const { extendings, ProtocolConstants, Zlib } = require("./");
 
 class Marshal {
 
