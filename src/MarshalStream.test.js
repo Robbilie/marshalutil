@@ -204,3 +204,24 @@ test("tuple [1, 2, 3]", () => {
     expect(Object.isFrozen(stream.value)).toEqual(true);
     expect(stream.value).toEqual([1, 2, 3]);
 });
+
+test("buffer 1", () => {
+    const data = Buffer.from("7e000000002c082c091405042d1e82fd050401115d14060496b3e60504734fdc05150504d9d4b5052e0a416e6e612053656d6168055d0520012f0800000000000000602f06002010000004012420", "hex");
+    const stream = new MarshalStream(data);
+    expect(() => stream.value).not.toThrow();
+});
+
+test("some random input", () => {
+    const lines = require("fs").readFileSync(require("path").join(__dirname, "..", "test", "testdata.txt")).toString().split("\n");
+
+    for (let line of lines) {
+        let ms = new MarshalStream(Buffer.from(line, "hex"));
+        expect(() => {
+            try {
+                ms.value;
+            } catch (e) {
+                throw new Error(line);
+            }
+        }).not.toThrow();
+    }
+});

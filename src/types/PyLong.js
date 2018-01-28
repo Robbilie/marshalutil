@@ -9,7 +9,7 @@ class PyLong extends PyObject {
         let length = 8;
         if (opcode === ProtocolType.Long)
             length = marshal.getLength();
-        return marshal.getBytes(8).readUIntLE(0, length);
+        return marshal.getBytes(length).readUIntLE(0, length);
     }
 
 }
