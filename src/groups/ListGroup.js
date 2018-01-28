@@ -7,12 +7,11 @@ const { PyList } = require("../types");
 class ListGroup extends Group {
 
     static isDecoder (opcode) {
-        if ([
+        return [
             ProtocolType.ListEmpty,
             ProtocolType.ListOne,
             ProtocolType.List,
-        ].includes(opcode))
-            return true;
+        ].includes(opcode);
     }
 
     static getDecoder () {

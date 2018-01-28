@@ -7,7 +7,7 @@ const { PyString } = require("../types");
 class StringGroup extends Group {
 
     static isDecoder (opcode) {
-        if ([
+        return [
             ProtocolType.StringEmpty,
             ProtocolType.UTF16Empty,
             ProtocolType.StringOne,
@@ -18,8 +18,7 @@ class StringGroup extends Group {
             ProtocolType.UTF16,
             ProtocolType.Utf8,
             ProtocolType.StringTable,
-        ].includes(opcode))
-            return true;
+        ].includes(opcode);
     }
 
     static getDecoder () {

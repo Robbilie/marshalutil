@@ -1,7 +1,7 @@
 "use strict";
 
 const { PyObject } = require(".");
-const { ZeroCompressOpcode } = require("../database");
+const { Dbrow, ZeroCompressOpcode } = require("../database");
 
 class PyDbrow extends PyObject {
 
@@ -12,11 +12,7 @@ class PyDbrow extends PyObject {
 
         const raw = ZeroCompressOpcode.load(marshal);
 
-        return this.parseRowData(header, raw);
-    }
-
-    parseRowData () {
-
+        return Dbrow.parse(marshal, header, raw);
     }
 
 }

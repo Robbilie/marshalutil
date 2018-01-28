@@ -7,15 +7,14 @@ const { PyInt } = require("../types");
 class IntGroup extends Group {
 
     static isDecoder (opcode) {
-        if ([
+        return [
             ProtocolType.Zero,
             ProtocolType.One,
             ProtocolType.Minusone,
             ProtocolType.Int8,
             ProtocolType.Int16,
             ProtocolType.Int32,
-        ].includes(opcode))
-            return true;
+        ].includes(opcode);
     }
 
     static getDecoder () {

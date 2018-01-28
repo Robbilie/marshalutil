@@ -7,11 +7,10 @@ const { PyLong } = require("../types");
 class LongGroup extends Group {
 
     static isDecoder (opcode) {
-        if ([
+        return [
             ProtocolType.Int64,
             ProtocolType.Long,
-        ].includes(opcode))
-            return true;
+        ].includes(opcode);
     }
 
     static getDecoder () {

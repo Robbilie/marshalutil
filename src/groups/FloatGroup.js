@@ -7,11 +7,10 @@ const { PyFloat } = require("../types");
 class FloatGroup extends Group {
 
     static isDecoder (opcode) {
-        if ([
+        return [
             ProtocolType.Float,
             ProtocolType.FloatEmpty,
-        ].includes(opcode))
-            return true;
+        ].includes(opcode);
     }
 
     static getDecoder () {

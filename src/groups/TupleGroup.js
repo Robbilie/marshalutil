@@ -7,13 +7,12 @@ const { PyTuple } = require("../types");
 class TupleGroup extends Group {
 
     static isDecoder (opcode) {
-        if ([
+        return [
             ProtocolType.TupleEmpty,
             ProtocolType.TupleOne,
             ProtocolType.TupleTwo,
             ProtocolType.Tuple,
-        ].includes(opcode))
-            return true;
+        ].includes(opcode);
     }
 
     static getDecoder () {
