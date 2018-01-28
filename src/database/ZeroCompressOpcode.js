@@ -34,7 +34,7 @@ class ZeroCompressOpcode {
             }
 
             if (opcode.secondIsZero) {
-                for (let n = 0; n < opcode.secondLength; n++) {
+                for (let n = 0; n < opcode.secondLength + 1; n++) {
                     ret.push(0x00);
                 }
             } else {

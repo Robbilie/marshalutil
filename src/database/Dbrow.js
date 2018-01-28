@@ -105,7 +105,6 @@ class Dbrow {
 
         }
 
-        throw new Error(JSON.stringify(sizeList))
         return new Map(sizeList.map(column => [column.name, column.value]));
 
     }
