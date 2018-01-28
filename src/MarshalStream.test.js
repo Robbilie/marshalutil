@@ -176,8 +176,31 @@ test("list [1,2]", () => {
 test("tuple []", () => {
     const data = ProtocolConstants.PacketHeader
         .concat(Buffer.from([ ProtocolType.TupleEmpty ]));
-    //expect(data).toEqual(0);
     const stream = new MarshalStream(data);
-    expect(stream.value).toEqual([]);
     expect(Object.isFrozen(stream.value)).toEqual(true);
+    expect(stream.value).toEqual([]);
+});
+
+test("tuple [1]", () => {
+    const data = ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.TupleOne, ProtocolType.Int8, 0x01 ]));
+    const stream = new MarshalStream(data);
+    expect(Object.isFrozen(stream.value)).toEqual(true);
+    expect(stream.value).toEqual([1]);
+});
+
+test("tuple [1, 2]", () => {
+    const data = ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.TupleTwo, ProtocolType.Int8, 0x01, ProtocolType.Int8, 0x02 ]));
+    const stream = new MarshalStream(data);
+    expect(Object.isFrozen(stream.value)).toEqual(true);
+    expect(stream.value).toEqual([1, 2]);
+});
+
+test("tuple [1, 2, 3]", () => {
+    const data = ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.Tuple, 0x03, ProtocolType.Int8, 0x01, ProtocolType.Int8, 0x02, ProtocolType.Int8, 0x03 ]));
+    const stream = new MarshalStream(data);
+    expect(Object.isFrozen(stream.value)).toEqual(true);
+    expect(stream.value).toEqual([1, 2, 3]);
 });
