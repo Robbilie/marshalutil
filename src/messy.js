@@ -1,12 +1,4 @@
 
-class BooleanGroup extends Group {
-
-	static getDecoder (opcode) {
-		if ([ProtocolType.True, ProtocolType.False].includes(opcode))
-			return TYPES.PyBool;
-	}
-
-}
 
 class RefGroup extends Group {
 
@@ -48,16 +40,6 @@ class RefObject {
 
 }
 
-class PyBool extends PyObject {
-
-	decode (marshal, opcode) {
-		if (opcode === ProtocolConstants.True)
-			return true;
-		else
-			return false;
-	}
-
-}
 
 const TYPES = {
 	PyObject,

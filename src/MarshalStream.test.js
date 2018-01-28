@@ -19,3 +19,9 @@ test("initialize a new instance with true bool content", () => {
     const stream = new MarshalStream(data);
     expect(stream.value).toEqual(true);
 });
+
+test("initialize a new instance with false bool content", () => {
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.False ]));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual(false);
+});
