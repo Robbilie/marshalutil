@@ -1,6 +1,6 @@
 "use strict";
 
-const { MarshalStorage } = require("./");
+const { MarshalStorage } = require(".");
 
 test("return empty map when initialized with size 0", () => {
     const storage = new MarshalStorage(0, Buffer.alloc(0));

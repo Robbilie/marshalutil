@@ -1,3 +1,5 @@
+"use strict";
+
 const ProtocolType = {
     EOF			 : 0x00, //	0: End of stream
     None		 : 0x01, //	1: None

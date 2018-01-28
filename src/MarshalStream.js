@@ -1,7 +1,7 @@
 "use strict";
 
-const { ProtocolConstants, Marshal, MarshalStorage } = require("./");
-const GROUPS = [...require("./groups/")];
+const { ProtocolConstants, Marshal, MarshalStorage } = require(".");
+const GROUPS = [...require("./groups")];
 
 class MarshalStream {
 

@@ -1,7 +1,7 @@
 "use strict";
 
-const { PyObject } = require("./");
-const { ProtocolType } = require("../");
+const { PyObject } = require(".");
+const { ProtocolType } = require("..");
 
 class PyBool extends PyObject {
 

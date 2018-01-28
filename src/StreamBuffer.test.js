@@ -1,6 +1,6 @@
 "use strict";
 
-const { StreamBuffer } = require("./");
+const { StreamBuffer } = require(".");
 
 test("stream buffer to read bytes", () => {
     const buffer = Buffer.from([ 1, 2, 3, 4 ]);

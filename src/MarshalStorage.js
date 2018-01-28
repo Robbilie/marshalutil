@@ -1,6 +1,6 @@
 "use strict";
 
-const { StreamBuffer } = require("./");
+const { StreamBuffer } = require(".");
 
 class MarshalStorage {
 

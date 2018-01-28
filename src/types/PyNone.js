@@ -1,6 +1,6 @@
 "use strict";
 
-const { PyObject } = require("./");
+const { PyObject } = require(".");
 
 class PyNone extends PyObject {
 

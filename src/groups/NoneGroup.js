@@ -1,8 +1,8 @@
 "use strict";
 
-const { Group } = require("./");
-const { ProtocolType } = require("../");
-const { PyNone } = require("../types/");
+const { Group } = require(".");
+const { ProtocolType } = require("..");
+const { PyNone } = require("../types");
 
 class NoneGroup extends Group {
 

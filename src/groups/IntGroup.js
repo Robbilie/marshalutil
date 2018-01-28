@@ -1,8 +1,8 @@
 "use strict";
 
-const { Group } = require("./");
-const { ProtocolType } = require("../");
-const { PyInt } = require("../types/");
+const { Group } = require(".");
+const { ProtocolType } = require("..");
+const { PyInt } = require("../types");
 
 class IntGroup extends Group {
 

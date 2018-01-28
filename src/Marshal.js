@@ -1,7 +1,7 @@
 "use strict";
 
 require("./extendings");
-const { ProtocolConstants, Zlib, StreamBuffer } = require("./");
+const { ProtocolConstants, Zlib, StreamBuffer } = require(".");
 
 class Marshal {
 

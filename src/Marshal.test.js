@@ -1,6 +1,6 @@
 "use strict";
 
-const { Marshal } = require("./");
+const { Marshal } = require(".");
 
 test("validate input to be buffer", () => {
     expect(() => Marshal.validateBuffer("test")).toThrow();

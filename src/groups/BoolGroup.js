@@ -1,8 +1,8 @@
 "use strict";
 
-const { Group } = require("./");
-const { ProtocolType } = require("../");
-const { PyBool } = require("../types/");
+const { Group } = require(".");
+const { ProtocolType } = require("..");
+const { PyBool } = require("../types");
 
 class BoolGroup extends Group {
 
