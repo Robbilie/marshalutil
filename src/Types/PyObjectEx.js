@@ -24,7 +24,7 @@ class PyObjectEx extends PyObject {
 			let obj = context.ProcessSnip();
 			if (obj instanceof Types.PyMark)
 				break;
-			this.Dict.set(context.ProcessSnip(), context.ProcessSnip());
+			this.Dict.set(obj, context.ProcessSnip());
 		}
 
 	}
