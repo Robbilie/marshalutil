@@ -7,7 +7,10 @@ const { PyBool } = require("../types");
 class BoolGroup extends Group {
 
     static isDecoder (opcode) {
-        if ([ProtocolType.True, ProtocolType.False].includes(opcode))
+        if ([
+            ProtocolType.True,
+            ProtocolType.False,
+        ].includes(opcode))
             return true;
     }
 

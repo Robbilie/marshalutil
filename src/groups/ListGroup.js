@@ -8,10 +8,10 @@ class ListGroup extends Group {
 
     static isDecoder (opcode) {
         if ([
-                ProtocolType.ListEmpty,
-                ProtocolType.ListOne,
-                ProtocolType.List,
-            ].includes(opcode))
+            ProtocolType.ListEmpty,
+            ProtocolType.ListOne,
+            ProtocolType.List,
+        ].includes(opcode))
             return true;
     }
 

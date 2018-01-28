@@ -8,9 +8,9 @@ class FloatGroup extends Group {
 
     static isDecoder (opcode) {
         if ([
-                ProtocolType.Float,
-                ProtocolType.FloatEmpty,
-            ].includes(opcode))
+            ProtocolType.Float,
+            ProtocolType.FloatEmpty,
+        ].includes(opcode))
             return true;
     }
 

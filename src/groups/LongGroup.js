@@ -8,9 +8,9 @@ class LongGroup extends Group {
 
     static isDecoder (opcode) {
         if ([
-                ProtocolType.Int64,
-                ProtocolType.Long,
-            ].includes(opcode))
+            ProtocolType.Int64,
+            ProtocolType.Long,
+        ].includes(opcode))
             return true;
     }
 
