@@ -11,7 +11,11 @@ class PyInstance extends PyObject {
 
                 constructor (args) {
                     super();
-                    this.args = args;
+                    this._args = args;
+                }
+
+                get args () {
+                    return this._args;
                 }
 
             }

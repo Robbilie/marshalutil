@@ -2,16 +2,18 @@
 
 const { Group } = require(".");
 const { ProtocolType } = require("..");
-const { PyDbrow } = require("../types");
+const { PyObjectEx } = require("../types");
 
 class ClassGroup extends Group {
 
     static isDecoder (opcode) {
-        return opcode === ProtocolType.Dbrow;
+        return [
+            ProtocolType.Reduce,
+        ].includes(opcode);
     }
 
     static getDecoder () {
-        return PyDbrow;
+        return PyObjectEx;
     }
 
 }
