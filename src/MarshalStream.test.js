@@ -134,3 +134,28 @@ test("long 1234567890", () => {
     const stream = new MarshalStream(data);
     expect(stream.value).toEqual(input);
 });
+
+test("list []", () => {
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.ListEmpty ]));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual([]);
+});
+
+test("list [1]", () => {
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.ListOne, ProtocolType.Int8, 0x01 ]));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual([1]);
+});
+
+test("list [1,2]", () => {
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.List, 0x02, ProtocolType.Int8, 0x01, ProtocolType.Int8, 0x02 ]));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual([1, 2]);
+});
+
+test("tuple []", () => {
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.TupleEmpty ]));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual([]);
+    expect(Object.isFrozen(stream.value)).toEqual(true);
+});
