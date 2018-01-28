@@ -36,7 +36,23 @@ class StreamBuffer {
     }
 
     readUInt32LE () {
-        return this.read(4).readUInt32LE();
+        return this.read(4).readUInt32LE(0);
+    }
+
+    readUIntLE (bytes) {
+        return this.read(bytes).readUIntLE(0, bytes);
+    }
+
+    readDoubleLE () {
+        return this.read(8).readDoubleLE(0);
+    }
+
+    readFloatLE () {
+        return this.read(4).readFloatLE(0);
+    }
+
+    seek (i) {
+        this._index += i;
     }
 
 }

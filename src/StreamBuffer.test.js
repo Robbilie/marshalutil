@@ -43,3 +43,12 @@ test("index", () => {
     expect(stream.read(1)).toEqual(Buffer.from([ 1 ]));
     expect(stream.index).toEqual(1);
 });
+
+test("seek", () => {
+    const buffer = Buffer.from([ 1, 2 ]);
+    const stream = new StreamBuffer(buffer);
+    expect(stream.read(1)).toEqual(Buffer.from([ 1 ]));
+    stream.seek(-1);
+    expect(stream.read(1)).toEqual(Buffer.from([ 1 ]));
+    expect(stream.read(1)).toEqual(Buffer.from([ 2 ]));
+});
