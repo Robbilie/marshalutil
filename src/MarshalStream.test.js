@@ -80,17 +80,20 @@ test("empty string content, UTF16Empty", () => {
     expect(stream.value).toEqual("");
 });
 
-test("StringTable content, '*corpid' 0x5d", () => {
-    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.StringTable, 0x01 ]));
+test("StringTable content, '*corpid' 0x01", () => {
+    const input = "*corpid";
+    const index = ProtocolConstants.StringTable.findIndex(value => value === input);
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.StringTable, index ]));
     const stream = new MarshalStream(data);
-    expect(stream.value).toEqual("*corpid");
+    expect(stream.value).toEqual(input);
 });
 
 test("string content, test", () => {
-    const buffer = Buffer.from("test", "utf8");
+    const input = "test";
+    const buffer = Buffer.from(input, "utf8");
     const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.String, buffer.length ]), buffer);
     const stream = new MarshalStream(data);
-    expect(stream.value).toEqual("test");
+    expect(stream.value).toEqual(input);
 });
 
 test("string long content, >256 ", () => {
@@ -104,3 +107,12 @@ test("string long content, >256 ", () => {
 });
 
 // TODO: utf16/utf8 tests
+
+test("float 0.5", () => {
+    const input = 0.5;
+    const buffer = Buffer.alloc(8);
+    buffer.writeDoubleLE(input);
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.Float ]), buffer);
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual(input);
+});
