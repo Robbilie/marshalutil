@@ -11,12 +11,20 @@ class StreamBuffer {
         return this.getBuffer().slice(this._index, this._index += bytesToRead);
     }
 
+    hasMore () {
+        return this._index < this.length - 1;
+    }
+
     rewind () {
         this._index = 0;
     }
 
     get length () {
         return this.getBuffer().length;
+    }
+
+    get index () {
+        return this._index;
     }
 
     getBuffer () {

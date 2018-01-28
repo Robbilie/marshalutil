@@ -10,7 +10,6 @@ class PyRef extends PyObject {
         const result = storage.get(index);
         if (marshal._needObjectEx === false || result instanceof PyObjectEx)
             return result;
-        marshal._needObjectEx = false;
         for (let obj of storage) {
             if (obj instanceof PyObjectEx) {
                 return obj;

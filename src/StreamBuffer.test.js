@@ -27,3 +27,19 @@ test("stream buffer to start at beginning when rewinded", () => {
     stream.rewind();
     expect(stream.read(1)).toEqual(Buffer.from([ 1 ]));
 });
+
+test("hasMore", () => {
+    const buffer = Buffer.from([ 1, 2 ]);
+    const stream = new StreamBuffer(buffer);
+    expect(stream.hasMore()).toEqual(true);
+    expect(stream.read(1)).toEqual(Buffer.from([ 1 ]));
+    expect(stream.read(1)).toEqual(Buffer.from([ 2 ]));
+    expect(stream.hasMore()).toEqual(false);
+});
+
+test("index", () => {
+    const buffer = Buffer.from([ 1, 2 ]);
+    const stream = new StreamBuffer(buffer);
+    expect(stream.read(1)).toEqual(Buffer.from([ 1 ]));
+    expect(stream.index).toEqual(1);
+});
