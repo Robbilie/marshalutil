@@ -8,20 +8,38 @@ test("initialize a new instance with no content", () => {
     expect(() => stream.value).toThrow();
 });
 
-test("initialize a new instance with null content", () => {
+test("null content", () => {
     const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.None ]));
     const stream = new MarshalStream(data);
     expect(stream.value).toEqual(null);
 });
 
-test("initialize a new instance with true bool content", () => {
+test("true bool content", () => {
     const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.True ]));
     const stream = new MarshalStream(data);
     expect(stream.value).toEqual(true);
 });
 
-test("initialize a new instance with false bool content", () => {
+test("false bool content", () => {
     const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.False ]));
     const stream = new MarshalStream(data);
     expect(stream.value).toEqual(false);
+});
+
+test("0 content", () => {
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.Zero ]));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual(0);
+});
+
+test("1 content", () => {
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.One ]));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual(1);
+});
+
+test("-1 content", () => {
+    const data = ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.Minusone ]));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual(-1);
 });
