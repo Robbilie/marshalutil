@@ -1,6 +1,6 @@
 "use strict";
 
-const { ProtocolConstants, Marshal, StreamBuffer, MarshalStorage } = require("./");
+const { ProtocolConstants, Marshal, MarshalStorage } = require("./");
 const GROUPS = [...require("./groups/")];
 
 class MarshalStream {
@@ -9,13 +9,8 @@ class MarshalStream {
         this._initialized = false;
         this._output = null;
         this._needObjectEx = false;
-        this._stream = this.createStream(buffer);
+        this._stream = Marshal.createStream(buffer);
         this._storage = this.setupStorage();
-    }
-
-    createStream (buffer) {
-        const data = Marshal.validate(buffer);
-        return new StreamBuffer(data);
     }
 
     setupStorage () {
@@ -41,12 +36,14 @@ class MarshalStream {
     processType (opcode) {
         const decoder = this.getDecoder(opcode);
         if (decoder === undefined)
-            throw new Error(`MissingDecoderException: 0x${opcode.toString(16).padStart(2, "0")}`)
+            throw new Error(`MissingDecoderException: 0x${opcode.toString(16).padStart(2, "0")}`);
         return this.decode(decoder, opcode);
     }
 
     getDecoder (opcode) {
         const group = GROUPS.find(processor => processor.isDecoder(opcode));
+        if (group === undefined)
+            throw new Error("NoDecoderException");
         return group.getDecoder();
     }
 

@@ -1,6 +1,7 @@
 "use strict";
 
-const { extendings, ProtocolConstants, Zlib } = require("./");
+require("./extendings");
+const { ProtocolConstants, Zlib, StreamBuffer } = require("./");
 
 class Marshal {
 
@@ -23,6 +24,11 @@ class Marshal {
         if (data[0] !== ProtocolConstants.ProtocolId)
             throw new Error("ArgumentException: Invalid stream header");
         return data.slice(1);
+    }
+
+    static createStream (buffer) {
+        const data = this.validate(buffer);
+        return new StreamBuffer(data);
     }
 
 }
