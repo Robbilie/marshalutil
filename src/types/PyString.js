@@ -11,23 +11,25 @@ class PyString extends PyObject {
         if (opcode === ProtocolType.StringTable)
             return ProtocolConstants.StringTable[marshal.getInt(1)];
 
-        let encoding = undefined;
-        if ([ProtocolType.UTF16, ProtocolType.UTF16One].includes(opcode)) {
-            encoding = "utf16le";
-        } else if (opcode === ProtocolType.Utf8) {
-            encoding = "utf8";
-        }
+        const encoding = PyString.getEncoding(opcode);
 
         if ([ProtocolType.StringLong, ProtocolType.String, ProtocolType.Buffer, ProtocolType.UTF16, ProtocolType.Utf8]) {
             const length = marshal.getLength();
             const buffer = marshal.getBytes(length);
-            if (encoding) {
-                return buffer.toString(encoding);
-            } else if (buffer.toString().isASCII()) {
-                return buffer.toString();
+            const str = buffer.toString(encoding);
+            if (encoding || str.isASCII()) {
+                return str;
             } else {
                 return buffer;
             }
+        }
+    }
+
+    static getEncoding (opcode) {
+        if ([ProtocolType.UTF16, ProtocolType.UTF16One].includes(opcode)) {
+            return "utf16le";
+        } else if (opcode === ProtocolType.Utf8) {
+            return "utf8";
         }
     }
 

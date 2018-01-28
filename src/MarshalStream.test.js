@@ -102,3 +102,5 @@ test("string long content, >256 ", () => {
     const stream = new MarshalStream(data);
     expect(stream.value).toEqual(test);
 });
+
+// TODO: utf16/utf8 tests
