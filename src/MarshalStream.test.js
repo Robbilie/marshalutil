@@ -213,7 +213,12 @@ test("tuple [-1, 0, 1]", () => {
     expect(stream.value).toEqual([-1, 0, 1]);
 });
 
-// TODO: Dict test
+test("dict { 'test': 1 }", () => {
+    const data = ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.Dict, 0x01, ProtocolType.One, ProtocolType.String, 0x04 ]), Buffer.from("test"));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual({ test: 1 });
+});
 
 /*
 test("some random input", () => {

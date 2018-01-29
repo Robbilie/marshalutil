@@ -195,3 +195,12 @@ test("encode tuple [-1, 0, 1]", () => {
 });
 
 // TODO: Dict test
+
+
+
+test("encode dict { 'test': 1 }", () => {
+    const input = { test: 1 };
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.Dict, 0x01, ProtocolType.One, ProtocolType.String, 0x04 ]), Buffer.from("test")));
+});

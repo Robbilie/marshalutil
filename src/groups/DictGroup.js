@@ -14,6 +14,10 @@ class DictGroup extends Group {
         return PyDict;
     }
 
+    static isEncoder (input) {
+        return input !== undefined && input !== null && input.constructor.name === "Object";
+    }
+
 }
 
 module.exports = DictGroup;

@@ -1,7 +1,7 @@
 "use strict";
 
 const { PyObject } = require(".");
-const { ProtocolType, ProtocolConstants } = require("..");
+const { ProtocolType, ProtocolConstants, MarshalHelper } = require("..");
 
 class PyString extends PyObject {
 
@@ -57,12 +57,7 @@ class PyString extends PyObject {
     }
 
     static encodeBuffer (marshal, input, type) {
-        let length = Buffer.from([ input.length ]);
-        if (input.length >= 0xff) {
-            const buffer = Buffer.alloc(4);
-            buffer.writeUInt32LE(input.length);
-            length = Buffer.from([ 0xff ]).concat(buffer);
-        }
+        let length = MarshalHelper.writeLength(input.length);
         return Buffer.from([ type ]).concat(length, Buffer.from(input));
     }
 

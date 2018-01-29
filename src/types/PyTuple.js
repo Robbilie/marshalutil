@@ -1,7 +1,7 @@
 "use strict";
 
 const { PyObject } = require(".");
-const { ProtocolType } = require("..");
+const { ProtocolType, MarshalHelper } = require("..");
 
 class PyTuple extends PyObject {
 
@@ -28,14 +28,7 @@ class PyTuple extends PyObject {
             } else if (input.length === 2) {
                 header = Buffer.from([ ProtocolType.TupleTwo]);
             } else {
-                let length;
-                if (input.length < 0xff) {
-                    length = Buffer.from([ input.length ]);
-                } else {
-                    const buffer = Buffer.alloc(4);
-                    buffer.writeUInt32LE(input.length);
-                    length = Buffer.from([ 0xff ]).concat(buffer);
-                }
+                const length = MarshalHelper.writeLength(input.length);
                 header = Buffer.from([ ProtocolType.Tuple ]).concat(length);
             }
             const results = input.map(val => marshal.processType(val));

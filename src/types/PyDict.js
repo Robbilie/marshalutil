@@ -1,6 +1,7 @@
 "use strict";
 
 const { PyObject } = require(".");
+const { ProtocolType, MarshalHelper } = require("..");
 
 class PyDict extends PyObject {
 
@@ -12,6 +13,15 @@ class PyDict extends PyObject {
             p[key] = value;
             return p;
         }, {});
+    }
+
+    encode (marshal, input) {
+        const entries = Object.entries(input);
+        return Buffer.from([ ProtocolType.Dict ])
+            .concat(
+                MarshalHelper.writeLength(entries.length),
+                entries.reduce((buffer, [key, value]) => buffer.concat(marshal.processType(value), marshal.processType(key)), Buffer.alloc(0))
+            );
     }
 
 }

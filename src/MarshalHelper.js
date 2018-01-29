@@ -3,7 +3,7 @@
 require("./extendings");
 const { ProtocolConstants, Zlib, StreamBuffer } = require(".");
 
-class Marshal {
+class MarshalHelper {
 
     static validateBuffer (buffer) {
         if (!(buffer instanceof Buffer))
@@ -31,6 +31,14 @@ class Marshal {
         return new StreamBuffer(data);
     }
 
+    static writeLength (length) {
+        if (length < 0xff)
+            return Buffer.from([ length ]);
+        const buffer = Buffer.alloc(4);
+        buffer.writeUInt32LE(length, 0);
+        return Buffer.from([ 0xff ]).concat(buffer);
+    }
+
 }
 
-module.exports = Marshal;
+module.exports = MarshalHelper;

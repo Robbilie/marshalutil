@@ -44,11 +44,7 @@ class PyInt extends PyObject {
             type = ProtocolType.Int32;
         }
         const buffer = Buffer.alloc(length);
-        try {
-            buffer.writeUIntLE(input, 0, length);
-        } catch (e) {
-            throw new Error(length + " " + type + " " + e)
-        }
+        buffer.writeUIntLE(input, 0, length);
         return Buffer.from([ type ]).concat(buffer);
     }
 

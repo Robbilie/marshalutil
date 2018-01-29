@@ -1,7 +1,7 @@
 "use strict";
 
 const { PyObject } = require(".");
-const { ProtocolType } = require("..");
+const { ProtocolType, MarshalHelper } = require("..");
 
 class PyList extends PyObject {
 
@@ -23,14 +23,7 @@ class PyList extends PyObject {
             if (input.length === 1) {
                 header = Buffer.from([ ProtocolType.ListOne ]);
             } else {
-                let length;
-                if (input.length < 0xff) {
-                    length = Buffer.from([ input.length ]);
-                } else {
-                    const buffer = Buffer.alloc(4);
-                    buffer.writeUInt32LE(input.length);
-                    length = Buffer.from([ 0xff ]).concat(buffer);
-                }
+                const length = MarshalHelper.writeLength(input.length);
                 header = Buffer.from([ ProtocolType.List ]).concat(length);
             }
             const results = input.map(val => marshal.processType(val));
