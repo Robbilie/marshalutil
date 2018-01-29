@@ -9,6 +9,10 @@ class PyBool extends PyObject {
         return opcode === ProtocolType.True;
     }
 
+    encode (marshal, input) {
+        return Buffer.from([ input === true ? ProtocolType.True : ProtocolType.False ]);
+    }
+
 }
 
 module.exports = PyBool;

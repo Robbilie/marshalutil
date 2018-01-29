@@ -14,8 +14,8 @@ class NoneGroup extends Group {
         return PyNone;
     }
 
-    static isEncoder (obj) {
-        return obj === null;
+    static isEncoder (input) {
+        return input === null;
     }
 
 }

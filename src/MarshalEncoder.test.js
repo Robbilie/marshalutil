@@ -13,3 +13,9 @@ test("encode null", () => {
     const encoder = new MarshalEncoder(input);
     expect(encoder.value).toEqual(ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.None ])))
 });
+
+test("encode true bool", () => {
+    const input = true;
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader.concat(Buffer.from([ ProtocolType.True ])))
+});

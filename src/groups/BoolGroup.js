@@ -17,6 +17,10 @@ class BoolGroup extends Group {
         return PyBool;
     }
 
+    static isEncoder (input) {
+        return typeof(input) === "boolean";
+    }
+
 }
 
 module.exports = BoolGroup;
