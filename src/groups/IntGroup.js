@@ -22,11 +22,12 @@ class IntGroup extends Group {
     }
 
     static isEncoder (input) {
-        return [
-            input === 0,
-            input === 1,
-            input === -1,
-        ].includes(true);
+        if (typeof(input) !== "number")
+            return false;
+        if ([-1, 0, 1].includes(input))
+            return true;
+        if (input % 1 === 0 && input >= 0 && input <= 0xffffffff)
+            return true;
     }
 
 }
