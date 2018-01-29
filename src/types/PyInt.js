@@ -31,17 +31,24 @@ class PyInt extends PyObject {
             return Buffer.from([ ProtocolType.One ]);
         if (input === -1)
             return Buffer.from([ ProtocolType.Minusone ]);
-        let length = 1;
-        let type = ProtocolType.Int8;
-        if (input > 0xff) {
+        let length;
+        let type;
+        if (input <= 0xff) {
+            length = 1;
+            type = ProtocolType.Int8;
+        } else if (input <= 0xffff) {
             length = 2;
             type = ProtocolType.Int16;
-        } else if (input > 0xffff) {
+        } else if (input <= 0xffffffff) {
             length = 4;
             type = ProtocolType.Int32;
         }
         const buffer = Buffer.alloc(length);
-        buffer.writeUIntLE(input, 0, length);
+        try {
+            buffer.writeUIntLE(input, 0, length);
+        } catch (e) {
+            throw new Error(length + " " + type + " " + e)
+        }
         return Buffer.from([ type ]).concat(buffer);
     }
 

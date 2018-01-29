@@ -50,54 +50,37 @@ test("encode -1", () => {
         .concat(Buffer.from([ ProtocolType.Minusone ])));
 });
 
+test("encode 0xff", () => {
+    const input = 0xff;
+    const bytes = 1;
+    const encoder = new MarshalEncoder(input);
+    const buffer = Buffer.alloc(bytes);
+    buffer.writeUIntLE(input, 0, bytes);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.Int8 ]), buffer));
+});
+
+test("encode 0xffff", () => {
+    const input = 0xffff;
+    const bytes = 2;
+    const encoder = new MarshalEncoder(input);
+    const buffer = Buffer.alloc(bytes);
+    buffer.writeUIntLE(input, 0, bytes);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.Int16 ]), buffer));
+});
+
+test("encode 0xffffffff", () => {
+    const input = 0xffffffff;
+    const bytes = 4;
+    const encoder = new MarshalEncoder(input);
+    const buffer = Buffer.alloc(bytes);
+    buffer.writeUIntLE(input, 0, bytes);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.Int32 ]), buffer));
+});
+
 /*
-test("0 content", () => {
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.Zero ]));
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(0);
-});
-
-test("1 content", () => {
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.One ]));
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(1);
-});
-
-test("-1 content", () => {
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.Minusone ]));
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(-1);
-});
-
-test("0xff content, int8", () => {
-    const buf = Buffer.alloc(1);
-    buf.writeUInt8(0xff);
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.Int8 ]), buf);
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(0xff);
-});
-
-test("0xffff content, int16", () => {
-    const buf = Buffer.alloc(2);
-    buf.writeUInt16LE(0xffff);
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.Int16 ]), buf);
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(0xffff);
-});
-
-test("0xffffffff content, int32", () => {
-    const buffer = Buffer.alloc(4);
-    buffer.writeUInt32LE(0xffffffff);
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.Int32 ]), buffer);
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(0xffffffff);
-});
 
 test("empty string content, StringEmpty", () => {
     const data = ProtocolConstants.PacketHeader
