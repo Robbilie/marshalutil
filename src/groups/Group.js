@@ -10,6 +10,10 @@ class Group {
         throw new Error("NotImplementedException");
     }
 
+    static isEncoder () {
+        return false;
+    }
+
 }
 
 module.exports = Group;

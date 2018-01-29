@@ -14,6 +14,10 @@ class NoneGroup extends Group {
         return PyNone;
     }
 
+    static isEncoder (obj) {
+        return obj === null;
+    }
+
 }
 
 module.exports = NoneGroup;

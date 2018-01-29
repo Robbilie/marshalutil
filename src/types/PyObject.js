@@ -6,6 +6,10 @@ class PyObject {
         throw new Error("NotImplementedException");
     }
 
+    encode () {
+        throw new Error("NotImplementedException");
+    }
+
 }
 
 module.exports = PyObject;

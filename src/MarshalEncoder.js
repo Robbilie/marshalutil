@@ -1,6 +1,7 @@
 "use strict";
 
-const { Marshal } = require(".");
+require("./extendings");
+const { Marshal, ProtocolConstants } = require(".");
 const GROUPS = [...require("./groups")];
 
 class MarshalEncoder extends Marshal {
@@ -11,14 +12,27 @@ class MarshalEncoder extends Marshal {
     }
 
     process () {
-        return
+        const data = this.processType(this._input);
+        return ProtocolConstants.PacketHeader.concat(data);
     }
 
-    getEncoder () {
-        const group = GROUPS.find(processor => processor.isEncoder(opcode));
+    processType (input) {
+        const encoder = this.getEncoder(input);
+        if (encoder === undefined)
+            throw new Error(`NoEncoderException: ${typeof(input)}`);
+        return this.encode(encoder, input);
+    }
+
+    getEncoder (input) {
+        const group = GROUPS.find(processor => processor.isEncoder(input));
         if (group === undefined)
-            throw new Error(`NoEncoderException: 0x${opcode.toString(16).padStart(2, "0")}`);
+            throw new Error(`NoEncoderException: ${typeof(input)}`);
         return group.getProcessor();
+    }
+
+    encode (T, input) {
+        const instance = new T();
+        return instance.encode(this, input);
     }
 
 }
