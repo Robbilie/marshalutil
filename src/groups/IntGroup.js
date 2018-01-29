@@ -21,6 +21,12 @@ class IntGroup extends Group {
         return PyInt;
     }
 
+    static isEncoder (input) {
+        return [
+            input === 0,
+        ].includes(true);
+    }
+
 }
 
 module.exports = IntGroup;

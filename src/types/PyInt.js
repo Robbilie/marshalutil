@@ -24,6 +24,11 @@ class PyInt extends PyObject {
         return marshal.getInt(bytes);
     }
 
+    encode (marshal, input) {
+        if (input === 0)
+            return Buffer.from([ ProtocolType.Zero ]);
+    }
+
 }
 
 module.exports = PyInt;
