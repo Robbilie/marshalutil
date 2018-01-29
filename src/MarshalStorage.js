@@ -7,10 +7,10 @@ class MarshalStorage {
     constructor (size, data) {
         this._storage = {};
         this._index = 0;
-        this._map = this.setup(size, data);
+        this._map = MarshalStorage.setup(size, data);
     }
 
-    setup (size, data) {
+    static setup (size, data) {
         const stream = new StreamBuffer(data);
         const map = {};
         for (let i = 0; i < size; i++) {
@@ -39,8 +39,9 @@ class MarshalStorage {
         return this._map;
     }
 
-    [Symbol.iterator] () {
-        return Object.values(this._storage);
+    *[Symbol.iterator] () {
+        for (let val of Object.values(this._storage))
+            yield val;
     }
 
 }

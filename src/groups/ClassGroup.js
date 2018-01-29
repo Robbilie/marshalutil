@@ -9,6 +9,7 @@ class ClassGroup extends Group {
     static isDecoder (opcode) {
         return [
             ProtocolType.Reduce,
+            ProtocolType.NewObj,
         ].includes(opcode);
     }
 
