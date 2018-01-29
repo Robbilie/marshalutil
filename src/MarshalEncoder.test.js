@@ -33,7 +33,21 @@ test("encode 0", () => {
     const input = 0;
     const encoder = new MarshalEncoder(input);
     expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.Zero ])))
+        .concat(Buffer.from([ ProtocolType.Zero ])));
+});
+
+test("encode 1", () => {
+    const input = 1;
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.One ])));
+});
+
+test("encode -1", () => {
+    const input = -1;
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.Minusone ])));
 });
 
 /*

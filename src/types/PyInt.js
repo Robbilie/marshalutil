@@ -27,6 +27,10 @@ class PyInt extends PyObject {
     encode (marshal, input) {
         if (input === 0)
             return Buffer.from([ ProtocolType.Zero ]);
+        if (input === 1)
+            return Buffer.from([ ProtocolType.One ]);
+        if (input === -1)
+            return Buffer.from([ ProtocolType.Minusone ]);
     }
 
 }

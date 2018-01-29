@@ -24,6 +24,8 @@ class IntGroup extends Group {
     static isEncoder (input) {
         return [
             input === 0,
+            input === 1,
+            input === -1,
         ].includes(true);
     }
 
