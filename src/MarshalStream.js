@@ -1,15 +1,14 @@
 "use strict";
 
-const { ProtocolConstants, Marshal, MarshalStorage } = require(".");
+const { ProtocolConstants, Marshal, MarshalStorage, MarshalHelper } = require(".");
 const GROUPS = [...require("./groups")];
 
-class MarshalStream {
+class MarshalStream extends Marshal {
 
     constructor (buffer) {
-        this._initialized = false;
-        this._output = null;
+        super();
         this._needObjectEx = false;
-        this._stream = Marshal.createStream(buffer);
+        this._stream = MarshalHelper.createStream(buffer);
         this._storage = this.setupStorage();
     }
 
@@ -17,14 +16,6 @@ class MarshalStream {
         const size = this.getInt(4);
         const data = this.getStream().slice(-(size * 4));
         return new MarshalStorage(size, data);
-    }
-
-    get value () {
-        if (this._initialized === false) {
-            this._initialized = true;
-            this._output = this.process();
-        }
-        return this._output;
     }
 
     process () {

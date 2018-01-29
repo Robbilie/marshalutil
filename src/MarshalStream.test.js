@@ -205,6 +205,7 @@ test("tuple [1, 2, 3]", () => {
     expect(stream.value).toEqual([1, 2, 3]);
 });
 
+/*
 test("some random input", () => {
     const lines = require("fs").readFileSync(require("path").join(__dirname, "..", "test", "testdata.txt")).toString().split("\n");
 
@@ -219,3 +220,4 @@ test("some random input", () => {
         }).not.toThrow();
     }
 });
+*/
