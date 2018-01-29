@@ -36,6 +36,9 @@ class PyString extends PyObject {
     encode (marshal, input) {
         if (input === "")
             return Buffer.from([ ProtocolType.StringEmpty ]);
+        const index = ProtocolConstants.StringTable.indexOf(input);
+        if (index >= 0)
+            return Buffer.from([ ProtocolType.StringTable, index ]);
     }
 
 }
