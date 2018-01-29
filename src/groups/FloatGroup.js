@@ -17,6 +17,13 @@ class FloatGroup extends Group {
         return PyFloat;
     }
 
+    static isEncoder (input) {
+        if (typeof(input) !== "number")
+            return false;
+        if (input % 1 !== 0)
+            return true;
+    }
+
 }
 
 module.exports = FloatGroup;

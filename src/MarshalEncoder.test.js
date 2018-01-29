@@ -125,20 +125,18 @@ test("encode string with length >256", () => {
         .concat(Buffer.from([ ProtocolType.String, 0xff ]), length, buffer));
 });
 
-/*
-test("string long content, >256 ", () => {
-    const test = "hjaskdfhlkajsdhfljashdlfjkasd";
-    const buffer = Buffer.from(test, "utf8");
-    const length = Buffer.alloc(4);
-    length.writeUInt32LE(test.length);
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.String, 0xff ]), length, buffer);
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(test);
-});
-
 // TODO: utf16/utf8 tests
 
+test("encode float 0.5", () => {
+    const input = 0.5;
+    const buffer = Buffer.alloc(8);
+    buffer.writeDoubleLE(input, 0);
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.Float ]), buffer));
+});
+
+/*
 test("float 0.5", () => {
     const input = 0.5;
     const buffer = Buffer.alloc(8);
