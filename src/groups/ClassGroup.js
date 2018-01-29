@@ -13,7 +13,7 @@ class ClassGroup extends Group {
         ].includes(opcode);
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyObjectEx;
     }
 

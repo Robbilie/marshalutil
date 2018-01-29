@@ -15,7 +15,7 @@ class TupleGroup extends Group {
         ].includes(opcode);
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyTuple;
     }
 

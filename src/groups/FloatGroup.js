@@ -13,7 +13,7 @@ class FloatGroup extends Group {
         ].includes(opcode);
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyFloat;
     }
 

@@ -10,7 +10,7 @@ class DbrowGroup extends Group {
         return opcode === ProtocolType.Dbrow;
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyDbrow;
     }
 

@@ -10,7 +10,7 @@ class NoneGroup extends Group {
         return opcode === ProtocolType.None;
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyNone;
     }
 

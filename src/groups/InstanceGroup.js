@@ -10,7 +10,7 @@ class InstanceGroup extends Group {
         return opcode === ProtocolType.Instance;
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyInstance;
     }
 

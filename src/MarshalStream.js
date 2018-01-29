@@ -46,7 +46,7 @@ class MarshalStream {
         const group = GROUPS.find(processor => processor.isDecoder(opcode));
         if (group === undefined)
             throw new Error(`NoDecoderException: 0x${opcode.toString(16).padStart(2, "0")}`);
-        return group.getDecoder();
+        return group.getProcessor();
     }
 
     decode (T, opcode) {

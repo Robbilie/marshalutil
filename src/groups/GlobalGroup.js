@@ -10,7 +10,7 @@ class GlobalGroup extends Group {
         return opcode === ProtocolType.Global;
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyGlobal;
     }
 

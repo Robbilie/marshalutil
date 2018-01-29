@@ -13,7 +13,7 @@ class LongGroup extends Group {
         ].includes(opcode);
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyLong;
     }
 

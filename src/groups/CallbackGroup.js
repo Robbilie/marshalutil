@@ -10,7 +10,7 @@ class CallbackGroup extends Group {
         return opcode === ProtocolType.Callback;
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyCallback;
     }
 

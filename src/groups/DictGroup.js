@@ -10,7 +10,7 @@ class DictGroup extends Group {
         return opcode === ProtocolType.Dict;
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyDict;
     }
 

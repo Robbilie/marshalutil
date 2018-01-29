@@ -6,7 +6,7 @@ class Group {
         return false;
     }
 
-    static getDecoder () {
+    static getProcessor () {
         throw new Error("NotImplementedException");
     }
 

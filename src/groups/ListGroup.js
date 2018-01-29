@@ -14,7 +14,7 @@ class ListGroup extends Group {
         ].includes(opcode);
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyList;
     }
 

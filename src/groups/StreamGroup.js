@@ -10,7 +10,7 @@ class StreamGroup extends Group {
         return opcode === ProtocolType.Stream;
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyStream;
     }
 

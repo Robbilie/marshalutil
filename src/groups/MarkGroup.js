@@ -10,7 +10,7 @@ class MarkGroup extends Group {
         return opcode === ProtocolType.Mark;
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyMark;
     }
 

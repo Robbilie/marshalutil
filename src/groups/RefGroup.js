@@ -10,7 +10,7 @@ class RefGroup extends Group {
         return opcode === ProtocolType.Ref;
     }
 
-    static getDecoder () {
+    static getProcessor () {
         return PyRef;
     }
 
