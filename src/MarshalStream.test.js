@@ -169,16 +169,16 @@ test("list []", () => {
 
 test("list [1]", () => {
     const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.ListOne, ProtocolType.Int8, 0x01 ]));
+        .concat(Buffer.from([ ProtocolType.ListOne, ProtocolType.One ]));
     const stream = new MarshalStream(data);
     expect(stream.value).toEqual([1]);
 });
 
-test("list [1,2]", () => {
+test("list [1,-1]", () => {
     const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.List, 0x02, ProtocolType.Int8, 0x01, ProtocolType.Int8, 0x02 ]));
+        .concat(Buffer.from([ ProtocolType.List, 0x02, ProtocolType.One, ProtocolType.Minusone ]));
     const stream = new MarshalStream(data);
-    expect(stream.value).toEqual([1, 2]);
+    expect(stream.value).toEqual([1, -1]);
 });
 
 test("tuple []", () => {
@@ -191,27 +191,29 @@ test("tuple []", () => {
 
 test("tuple [1]", () => {
     const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.TupleOne, ProtocolType.Int8, 0x01 ]));
+        .concat(Buffer.from([ ProtocolType.TupleOne, ProtocolType.One ]));
     const stream = new MarshalStream(data);
     expect(Object.isFrozen(stream.value)).toEqual(true);
     expect(stream.value).toEqual([1]);
 });
 
-test("tuple [1, 2]", () => {
+test("tuple [1, -1]", () => {
     const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.TupleTwo, ProtocolType.Int8, 0x01, ProtocolType.Int8, 0x02 ]));
+        .concat(Buffer.from([ ProtocolType.TupleTwo, ProtocolType.One, ProtocolType.Minusone ]));
     const stream = new MarshalStream(data);
     expect(Object.isFrozen(stream.value)).toEqual(true);
-    expect(stream.value).toEqual([1, 2]);
+    expect(stream.value).toEqual([1, -1]);
 });
 
-test("tuple [1, 2, 3]", () => {
+test("tuple [-1, 0, 1]", () => {
     const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.Tuple, 0x03, ProtocolType.Int8, 0x01, ProtocolType.Int8, 0x02, ProtocolType.Int8, 0x03 ]));
+        .concat(Buffer.from([ ProtocolType.Tuple, 0x03, ProtocolType.Minusone, ProtocolType.Zero, ProtocolType.One ]));
     const stream = new MarshalStream(data);
     expect(Object.isFrozen(stream.value)).toEqual(true);
-    expect(stream.value).toEqual([1, 2, 3]);
+    expect(stream.value).toEqual([-1, 0, 1]);
 });
+
+// TODO: Dict test
 
 /*
 test("some random input", () => {

@@ -17,6 +17,13 @@ class LongGroup extends Group {
         return PyLong;
     }
 
+    static isEncoder (input) {
+        if (typeof(input) !== "number")
+            return false;
+        if (input % 1 === 0 && input > 0xffffffff)
+            return true;
+    }
+
 }
 
 module.exports = LongGroup;

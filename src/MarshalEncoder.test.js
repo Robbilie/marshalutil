@@ -136,87 +136,62 @@ test("encode float 0.5", () => {
         .concat(Buffer.from([ ProtocolType.Float ]), buffer));
 });
 
-/*
-test("float 0.5", () => {
-    const input = 0.5;
-    const buffer = Buffer.alloc(8);
-    buffer.writeDoubleLE(input);
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.Float ]), buffer);
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(input);
-});
-
-test("UInt64 1234567890", () => {
-    const input = 1234567890;
+test("encode long 1234567890123", () => {
+    const input = 1234567890123;
     const buffer = Buffer.alloc(8);
     buffer.writeUIntLE(input, 0, 8);
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.Int64 ]), buffer);
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(input);
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.Long, buffer.length ]), buffer));
 });
 
-test("long 1234567890", () => {
-    const input = 1234567890;
-    const buffer = Buffer.alloc(8);
-    buffer.writeUIntLE(input, 0, 8);
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.Long, buffer.length ]), buffer);
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(input);
+test("encode list []", () => {
+    const input = [];
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.ListEmpty ])));
 });
 
-test("list []", () => {
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.ListEmpty ]));
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual([]);
+test("encode list [1]", () => {
+    const input = [1];
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.ListOne, ProtocolType.One ])));
 });
 
-test("list [1]", () => {
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.ListOne, ProtocolType.Int8, 0x01 ]));
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual([1]);
+test("encode list [1, -1]", () => {
+    const input = [1, -1];
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.List, input.length, ProtocolType.One, ProtocolType.Minusone ])));
 });
 
-test("list [1,2]", () => {
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.List, 0x02, ProtocolType.Int8, 0x01, ProtocolType.Int8, 0x02 ]));
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual([1, 2]);
+test("encode tuple []", () => {
+    const input = Object.freeze([]);
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.TupleEmpty ])));
 });
 
-test("tuple []", () => {
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.TupleEmpty ]));
-    const stream = new MarshalStream(data);
-    expect(Object.isFrozen(stream.value)).toEqual(true);
-    expect(stream.value).toEqual([]);
+test("encode tuple [1]", () => {
+    const input = Object.freeze([1]);
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.TupleOne, ProtocolType.One ])));
 });
 
-test("tuple [1]", () => {
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.TupleOne, ProtocolType.Int8, 0x01 ]));
-    const stream = new MarshalStream(data);
-    expect(Object.isFrozen(stream.value)).toEqual(true);
-    expect(stream.value).toEqual([1]);
+test("encode tuple [1, -1]", () => {
+    const input = Object.freeze([1, -1]);
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.TupleTwo, ProtocolType.One, ProtocolType.Minusone ])));
 });
 
-test("tuple [1, 2]", () => {
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.TupleTwo, ProtocolType.Int8, 0x01, ProtocolType.Int8, 0x02 ]));
-    const stream = new MarshalStream(data);
-    expect(Object.isFrozen(stream.value)).toEqual(true);
-    expect(stream.value).toEqual([1, 2]);
+test("encode tuple [-1, 0, 1]", () => {
+    const input = Object.freeze([-1, 0, 1]);
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.Tuple, input.length, ProtocolType.Minusone, ProtocolType.Zero, ProtocolType.One ])));
 });
 
-test("tuple [1, 2, 3]", () => {
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.Tuple, 0x03, ProtocolType.Int8, 0x01, ProtocolType.Int8, 0x02, ProtocolType.Int8, 0x03 ]));
-    const stream = new MarshalStream(data);
-    expect(Object.isFrozen(stream.value)).toEqual(true);
-    expect(stream.value).toEqual([1, 2, 3]);
-});
- */
+// TODO: Dict test
