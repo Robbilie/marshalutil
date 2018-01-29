@@ -25,6 +25,10 @@ class StringGroup extends Group {
         return PyString;
     }
 
+    static isEncoder (input) {
+        return typeof(input) === "string" || input instanceof Buffer;
+    }
+
 }
 
 module.exports = StringGroup;

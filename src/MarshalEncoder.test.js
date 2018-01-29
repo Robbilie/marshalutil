@@ -80,8 +80,14 @@ test("encode 0xffffffff", () => {
         .concat(Buffer.from([ ProtocolType.Int32 ]), buffer));
 });
 
-/*
+test("encode empty string", () => {
+    const input = "";
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.StringEmpty ])));
+});
 
+/*
 test("empty string content, StringEmpty", () => {
     const data = ProtocolConstants.PacketHeader
         .concat(Buffer.from([ ProtocolType.StringEmpty ]));

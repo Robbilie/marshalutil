@@ -33,6 +33,11 @@ class PyString extends PyObject {
         }
     }
 
+    encode (marshal, input) {
+        if (input === "")
+            return Buffer.from([ ProtocolType.StringEmpty ]);
+    }
+
 }
 
 module.exports = PyString;
