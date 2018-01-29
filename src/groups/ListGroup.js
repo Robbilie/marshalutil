@@ -18,6 +18,10 @@ class ListGroup extends Group {
         return PyList;
     }
 
+    static isEncoder (input) {
+        return input !== undefined && input !== null && input.constructor.name === "Array" && !Object.isFrozen(input);
+    }
+
 }
 
 module.exports = ListGroup;

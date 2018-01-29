@@ -19,6 +19,10 @@ class TupleGroup extends Group {
         return PyTuple;
     }
 
+    static isEncoder (input) {
+        return input !== undefined && input !== null && input.constructor.name === "Array" && Object.isFrozen(input);
+    }
+
 }
 
 module.exports = TupleGroup;
