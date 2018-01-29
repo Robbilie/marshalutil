@@ -100,6 +100,14 @@ test("StringTable content, '*corpid' 0x01", () => {
     expect(stream.value).toEqual(input);
 });
 
+test("string content, t", () => {
+    const input = "t";
+    const data = ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.StringOne ]), Buffer.from(input));
+    const stream = new MarshalStream(data);
+    expect(stream.value).toEqual(input);
+});
+
 test("string content, test", () => {
     const input = "test";
     const buffer = Buffer.from(input, "utf8");

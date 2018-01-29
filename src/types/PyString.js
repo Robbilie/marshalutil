@@ -13,15 +13,22 @@ class PyString extends PyObject {
 
         const encoding = PyString.getEncoding(opcode);
 
-        if ([ProtocolType.StringLong, ProtocolType.String, ProtocolType.Buffer, ProtocolType.UTF16, ProtocolType.Utf8]) {
-            const length = marshal.getLength();
-            const buffer = marshal.getBytes(length);
-            const str = buffer.toString(encoding);
-            if (encoding || str.isASCII()) {
-                return str;
-            } else {
-                return buffer;
-            }
+        let length = 1;
+        if ([
+            ProtocolType.StringLong,
+            ProtocolType.String,
+            ProtocolType.Buffer,
+            ProtocolType.UTF16,
+            ProtocolType.Utf8,
+        ].includes(opcode))
+            length = marshal.getLength();
+
+        const buffer = marshal.getBytes(length);
+        const str = buffer.toString(encoding);
+        if (encoding || str.isASCII()) {
+            return str;
+        } else {
+            return buffer;
         }
     }
 
@@ -39,6 +46,24 @@ class PyString extends PyObject {
         const index = ProtocolConstants.StringTable.indexOf(input);
         if (index >= 0)
             return Buffer.from([ ProtocolType.StringTable, index ]);
+        if (typeof(input) === "string") {
+            if (input.length === 1)
+                return Buffer.from([ ProtocolType.StringOne ]).concat(Buffer.from(input));
+            return PyString.encodeBuffer(marshal, input, ProtocolType.String);
+        }
+        if (input instanceof Buffer) {
+            return PyString.encodeBuffer(marshal, input, ProtocolType.Buffer);
+        }
+    }
+
+    static encodeBuffer (marshal, input, type) {
+        let length = Buffer.from([ input.length ]);
+        if (input.length >= 0xff) {
+            const buffer = Buffer.alloc(4);
+            buffer.writeUInt32LE(input.length);
+            length = Buffer.from([ 0xff ]).concat(buffer);
+        }
+        return Buffer.from([ type ]).concat(length, Buffer.from(input));
     }
 
 }

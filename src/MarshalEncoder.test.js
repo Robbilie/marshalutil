@@ -95,25 +95,37 @@ test("encode string table entry", () => {
         .concat(Buffer.from([ ProtocolType.StringTable, index ])));
 });
 
-/*
-test("StringTable content, '*corpid' 0x01", () => {
-    const input = "*corpid";
-    const index = ProtocolConstants.StringTable.findIndex(value => value === input);
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.StringTable, index ]));
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(input);
+test("encode string 't'", () => {
+    const input = "t";
+    const buffer = Buffer.from(input);
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.StringOne ]), buffer));
 });
 
-test("string content, test", () => {
+test("encode string 'test'", () => {
     const input = "test";
-    const buffer = Buffer.from(input, "utf8");
-    const data = ProtocolConstants.PacketHeader
-        .concat(Buffer.from([ ProtocolType.String, buffer.length ]), buffer);
-    const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(input);
+    const buffer = Buffer.from(input);
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.String, buffer.length ]), buffer));
 });
 
+test("encode string with length >256", () => {
+    const input = `testtesttesttesttesttesttesttesttesttesttesttesttesttestte
+    sttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttes
+    ttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+    testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttestt
+    esttesttesttesttesttesttesttesttesttesttest`;
+    const buffer = Buffer.from(input);
+    const length = Buffer.alloc(4);
+    length.writeUInt32LE(buffer.length);
+    const encoder = new MarshalEncoder(input);
+    expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
+        .concat(Buffer.from([ ProtocolType.String, 0xff ]), length, buffer));
+});
+
+/*
 test("string long content, >256 ", () => {
     const test = "hjaskdfhlkajsdhfljashdlfjkasd";
     const buffer = Buffer.from(test, "utf8");
