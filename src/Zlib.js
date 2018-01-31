@@ -4,11 +4,11 @@ const zlib = require("zlib");
 
 class Zlib {
 
-    decompress (bytes) {
+    static decompress (bytes) {
         return zlib.inflateSync(bytes);
     }
 
-    compress (bytes) {
+    static compress (bytes) {
         return zlib.deflateSync(bytes);
     }
 
