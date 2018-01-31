@@ -2,7 +2,7 @@
 
 const { PyObject } = require(".");
 
-// TODO: fix recrusive shit
+// TODO: fix recursive shit
 const proxy = require("..");
 
 class PyStream extends PyObject {
