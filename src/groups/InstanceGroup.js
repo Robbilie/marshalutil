@@ -14,6 +14,10 @@ class InstanceGroup extends Group {
         return PyInstance;
     }
 
+    static isEncoder (input) {
+        return input instanceof PyInstance;
+    }
+
 }
 
 module.exports = InstanceGroup;
