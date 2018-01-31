@@ -13,7 +13,7 @@ class PyString extends PyObject {
 
         const encoding = PyString.getEncoding(opcode);
 
-        let length = 1;
+        let length = opcode === ProtocolType.UTF16One ? 2 : 1;
         if ([
             ProtocolType.StringLong,
             ProtocolType.String,
