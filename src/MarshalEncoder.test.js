@@ -50,32 +50,32 @@ test("encode -1", () => {
         .concat(Buffer.from([ ProtocolType.Minusone ])));
 });
 
-test("encode 0xff", () => {
-    const input = 0xff;
+test("encode 0x05", () => {
+    const input = 0x05;
     const bytes = 1;
     const encoder = new MarshalEncoder(input);
     const buffer = Buffer.alloc(bytes);
-    buffer.writeUIntLE(input, 0, bytes);
+    buffer.writeIntLE(input, 0, bytes);
     expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
         .concat(Buffer.from([ ProtocolType.Int8 ]), buffer));
 });
 
-test("encode 0xffff", () => {
-    const input = 0xffff;
+test("encode 0x0555", () => {
+    const input = 0x0555;
     const bytes = 2;
     const encoder = new MarshalEncoder(input);
     const buffer = Buffer.alloc(bytes);
-    buffer.writeUIntLE(input, 0, bytes);
+    buffer.writeIntLE(input, 0, bytes);
     expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
         .concat(Buffer.from([ ProtocolType.Int16 ]), buffer));
 });
 
-test("encode 0xffffffff", () => {
-    const input = 0xffffffff;
+test("encode 0x05555555", () => {
+    const input = 0x05555555;
     const bytes = 4;
     const encoder = new MarshalEncoder(input);
     const buffer = Buffer.alloc(bytes);
-    buffer.writeUIntLE(input, 0, bytes);
+    buffer.writeIntLE(input, 0, bytes);
     expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
         .concat(Buffer.from([ ProtocolType.Int32 ]), buffer));
 });

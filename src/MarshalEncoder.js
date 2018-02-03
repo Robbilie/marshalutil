@@ -2,6 +2,7 @@
 
 require("./extendings");
 const { Marshal, ProtocolConstants } = require(".");
+const { PyObject } = require("./types");
 const GROUPS = [...require("./groups")];
 
 class MarshalEncoder extends Marshal {
@@ -17,6 +18,8 @@ class MarshalEncoder extends Marshal {
     }
 
     processType (input) {
+        if (input instanceof PyObject)
+            return input.encode(this, input.valueOf());
         const encoder = this.getEncoder(input);
         if (encoder === undefined)
             throw new Error(`NoEncoderException: ${typeof(input)}`);

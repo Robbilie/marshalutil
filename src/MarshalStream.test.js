@@ -68,13 +68,13 @@ test("0xffff content, int16", () => {
     expect(stream.value).toEqual(0xffff);
 });
 
-test("0xffffffff content, int32", () => {
+test("0x543210 content, int32", () => {
     const buffer = Buffer.alloc(4);
-    buffer.writeUInt32LE(0xffffffff);
+    buffer.writeUInt32LE(0x543210);
     const data = ProtocolConstants.PacketHeader
         .concat(Buffer.from([ ProtocolType.Int32 ]), buffer);
     const stream = new MarshalStream(data);
-    expect(stream.value).toEqual(0xffffffff);
+    expect(stream.value).toEqual(0x543210);
 });
 
 test("empty string content, StringEmpty", () => {
