@@ -7,12 +7,6 @@ if (!Buffer.prototype.concat)
         }
     });
 
-Object.defineProperty(Buffer.prototype, "toJSON", {
-    value: function () {
-        return { type: "Buffer", data: this.toString("hex") };
-    }
-});
-
 Object.defineProperty(String.prototype, 'isASCII', {
     value: function () {
         return /^[\x00-\x7F]*$/.test(this);
