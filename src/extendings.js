@@ -15,3 +15,10 @@ if (!String.prototype.isASCII)
             return (charCode >= 0x20 && charCode <= 0x7e);*/
         }
     });
+
+if (!Array.prototype.freeze)
+    Object.defineProperty(Array.prototype, 'freeze', {
+        value: function () {
+            return Object.freeze(this);
+        }
+    });
