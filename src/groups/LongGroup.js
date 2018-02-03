@@ -20,7 +20,7 @@ class LongGroup extends Group {
     static isEncoder (input) {
         if (typeof(input) !== "number")
             return false;
-        if (input % 1 === 0 && input > 0xffffffff)
+        if (input % 1 === 0 && input > 0xffffffff / 2)
             return true;
     }
 
