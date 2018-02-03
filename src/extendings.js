@@ -8,7 +8,7 @@ if (!Buffer.prototype.concat)
     });
 
 Object.defineProperty(Buffer.prototype, "toJSON", {
-    value: function (...buffers) {
+    value: function () {
         return { type: "Buffer", data: this.toString("hex") };
     }
 });
