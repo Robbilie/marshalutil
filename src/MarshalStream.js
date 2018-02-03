@@ -59,7 +59,7 @@ class MarshalStream extends Marshal {
     getInt (bytesToRead = 1) {
         const bytes = Buffer.alloc(4);
         this.getBytes(bytesToRead).copy(bytes);
-        return bytes.readUInt32LE();
+        return bytes.readInt32LE(0);
     }
 
     getBytes (bytesToRead) {
