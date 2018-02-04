@@ -28,6 +28,7 @@ class InstanceHelper {
         if (T.prototype.hasStateSetter === true) {
             const t = new T();
             t.state = args;
+            return t;
         } else {
             return new T(args);
         }
