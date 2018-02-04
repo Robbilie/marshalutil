@@ -8,9 +8,10 @@ const proxy = require("..");
 class PyStream extends PyObject {
 
     decode (marshal, opcode) {
+        const { MarshalStream } = proxy;
         const length = marshal.getLength();
         const buffer = marshal.getBytes(length);
-        const stream = new proxy.MarshalStream(buffer);
+        const stream = new MarshalStream(buffer);
         return stream.value;
     }
 
