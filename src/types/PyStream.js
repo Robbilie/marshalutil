@@ -14,6 +14,14 @@ class PyStream extends PyObject {
         return stream.value;
     }
 
+    encode (marshal, input) {
+        const { MarshalEncoder, MarshalHelper, ProtocolType } = proxy;
+        const encoder = new MarshalEncoder(input);
+        const data = encoder.value;
+        const length = MarshalHelper.writeLength(data.length);
+        return Buffer.from([ ProtocolType.Stream ]).concat(length, data);
+    }
+
 }
 
 module.exports = PyStream;

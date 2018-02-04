@@ -57,7 +57,7 @@ class PyString extends PyObject {
     }
 
     static encodeBuffer (marshal, input, type) {
-        let length = MarshalHelper.writeLength(input.length);
+        const length = MarshalHelper.writeLength(input.length);
         return Buffer.from([ type ]).concat(length, Buffer.from(input));
     }
 
