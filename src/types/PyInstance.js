@@ -29,10 +29,13 @@ class PyInstance extends PyObject {
         }
     }
 
+    // maybe not but: instance name is PyBuffer and args are a tuple (so freeze)
     encode (marshal, input) {
+        const name = input.__guid__ || input.constructor.name;
+        const args = input.state;
         return Buffer.from([ ProtocolType.Instance ]).concat(
-            marshal.processType(input.__guid__ || input.constructor.name),
-            marshal.processType(input.state),
+            marshal.processType(name),
+            marshal.processType(args),
         );
     }
 
