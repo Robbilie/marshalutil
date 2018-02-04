@@ -55,6 +55,10 @@ class PyInstance extends PyObject {
         };
     }
 
+    valueOf () {
+        return this;
+    }
+
 }
 
 module.exports = PyInstance;
