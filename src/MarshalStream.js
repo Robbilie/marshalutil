@@ -35,8 +35,10 @@ class MarshalStream extends Marshal {
 
     getDecoder (opcode) {
         const group = GROUPS.find(processor => processor.isDecoder(opcode));
-        if (group === undefined)
+        if (group === undefined) {
+            console.log(this.getStream().getBuffer().toString("hex"));
             throw new Error(`NoDecoderException: 0x${opcode.toString(16).padStart(2, "0")}`);
+        }
         return group.getProcessor();
     }
 
