@@ -9,21 +9,13 @@ class PyInstance extends PyObject {
         const name = marshal.process();
         const args = marshal.process();
         if (InstanceHelper.has(name)) {
-            const T = InstanceHelper.get(name);
-            const instance = new T();
-            instance.state = args;
-            return instance;
+            return InstanceHelper.decode(name, args);
         } else {
             const obj = {
                 [name]: class extends PyInstance {
 
-                    constructor (args) {
-                        super();
-                        this._args = args;
-                    }
-
-                    get args () {
-                        return this._args;
+                    get state () {
+                        return this._value;
                     }
 
                 }
@@ -34,9 +26,21 @@ class PyInstance extends PyObject {
 
     encode (marshal, input) {
         return Buffer.from([ ProtocolType.Instance ]).concat(
-            marshal.processType(input.__guid__),
+            marshal.processType(input.__guid__ || input.constructor.name),
             marshal.processType(input.state),
         );
+    }
+
+    get hasStateSetter () {
+        return this.hasState("set");
+    }
+
+    hasState (key) {
+        return !!(Object.getOwnPropertyDescriptor(this, "state") || { [key]: false })[key] || (Object.getPrototypeOf(this).constructor.name === "Object" ? false : Object.getPrototypeOf(this).hasState(key));
+    }
+
+    get hasStateGetter () {
+        return this.hasState("get");
     }
 
 }

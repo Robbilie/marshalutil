@@ -23,6 +23,16 @@ class InstanceHelper {
         return nameToClass;
     }
 
+    static decode (name, args) {
+        const T = this.get(name);
+        if (T.prototype.hasStateSetter === true) {
+            const t = new T();
+            t.state = args;
+        } else {
+            return new T(args);
+        }
+    }
+
 }
 
 module.exports = InstanceHelper;
