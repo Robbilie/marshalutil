@@ -48,6 +48,13 @@ class PyInstance extends PyObject {
         return this.hasState("get");
     }
 
+    toJSON () {
+        return {
+            type: this.__guid__ || this.constructor.name,
+            data: this.state,
+        };
+    }
+
 }
 
 module.exports = PyInstance;
