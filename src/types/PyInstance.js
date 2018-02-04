@@ -11,16 +11,21 @@ class PyInstance extends PyObject {
         if (InstanceHelper.has(name)) {
             return InstanceHelper.decode(name, args);
         } else {
-            const obj = {
-                [name]: class extends PyInstance {
+            console.warn(`No class found for PyInstance '${name}'`);
+            const obj = (nom) => ({
+                [nom]: class extends PyInstance {
+
+                    get __guid__ () {
+                        return nom;
+                    }
 
                     get state () {
                         return this._value;
                     }
 
                 }
-            };
-            return new obj[name](args);
+            }[nom]);
+            return new (obj(name))(args);
         }
     }
 

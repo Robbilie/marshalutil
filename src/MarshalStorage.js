@@ -2,18 +2,21 @@
 
 const { StreamBuffer } = require(".");
 
+/*
+ * MarshalStorage starts with index 1 !
+ */
 class MarshalStorage {
 
     constructor (size, data) {
         this._storage = {};
-        this._index = 0;
+        this._index = 1;
         this._map = MarshalStorage.setup(size, data);
     }
 
     static setup (size, data) {
         const stream = new StreamBuffer(data);
         const map = {};
-        for (let i = 0; i < size; i++) {
+        for (let i = 1; i < size; i++) {
             map[i] = stream.readUInt32LE();
         }
         return map;
