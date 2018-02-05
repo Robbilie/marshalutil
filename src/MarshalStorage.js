@@ -16,7 +16,7 @@ class MarshalStorage {
     static setup (size, data) {
         const stream = new StreamBuffer(data);
         const map = {};
-        for (let i = 1; i < size; i++) {
+        for (let i = 1; i <= size; i++) {
             map[i] = stream.readUInt32LE();
         }
         return map;
