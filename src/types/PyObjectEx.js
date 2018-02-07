@@ -40,6 +40,14 @@ class PyObjectEx extends PyObject {
                     return this._args;
                 }
 
+                toJSON () {
+                    return {
+                        type: this.constructor.name,
+                        header: this.header,
+                        args: this.args,
+                    };
+                }
+
             }
         };
         let args = undefined;
