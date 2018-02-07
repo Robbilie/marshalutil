@@ -15,7 +15,7 @@ class PyTuple extends PyObject {
             length = marshal.getLength();
         }
         const tuple = new Array(length).fill(0).map(() => marshal.process());
-        return Object.freeze(tuple);
+        return tuple.freeze();
     }
 
     encode (marshal, input) {

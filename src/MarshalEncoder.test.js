@@ -167,28 +167,28 @@ test("encode list [1, -1]", () => {
 });
 
 test("encode tuple []", () => {
-    const input = Object.freeze([]);
+    const input = [].freeze();
     const encoder = new MarshalEncoder(input);
     expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
         .concat(Buffer.from([ ProtocolType.TupleEmpty ])));
 });
 
 test("encode tuple [1]", () => {
-    const input = Object.freeze([1]);
+    const input = [1].freeze();
     const encoder = new MarshalEncoder(input);
     expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
         .concat(Buffer.from([ ProtocolType.TupleOne, ProtocolType.One ])));
 });
 
 test("encode tuple [1, -1]", () => {
-    const input = Object.freeze([1, -1]);
+    const input = [1, -1].freeze();
     const encoder = new MarshalEncoder(input);
     expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
         .concat(Buffer.from([ ProtocolType.TupleTwo, ProtocolType.One, ProtocolType.Minusone ])));
 });
 
 test("encode tuple [-1, 0, 1]", () => {
-    const input = Object.freeze([-1, 0, 1]);
+    const input = [-1, 0, 1].freeze();
     const encoder = new MarshalEncoder(input);
     expect(encoder.value).toEqual(ProtocolConstants.PacketHeader
         .concat(Buffer.from([ ProtocolType.Tuple, input.length, ProtocolType.Minusone, ProtocolType.Zero, ProtocolType.One ])));
