@@ -13,7 +13,7 @@ class PyString extends PyObject {
 
         const encoding = PyString.getEncoding(opcode);
 
-        let length = opcode === ProtocolType.UTF16One ? 2 : 1;
+        let length = 1;
         if ([
             ProtocolType.StringLong,
             ProtocolType.String,
@@ -22,6 +22,9 @@ class PyString extends PyObject {
             ProtocolType.Utf8,
         ].includes(opcode))
             length = marshal.getLength();
+
+        if (encoding === "utf16le")
+            length *= 2;
 
         const buffer = marshal.getBytes(length);
         const str = buffer.toString(encoding);
