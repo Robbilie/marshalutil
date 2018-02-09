@@ -44,7 +44,7 @@ class PyInstance extends PyObject {
     }
 
     hasState (key) {
-        return !!(Object.getOwnPropertyDescriptor(this, "state") || { [key]: false })[key] || (Object.getPrototypeOf(this).constructor.name === "Object" ? false : Object.getPrototypeOf(this).hasState(key));
+        return !!(Object.getOwnPropertyDescriptor(this, "state") || { [key]: false })[key] || (Object.getPrototypeOf(this).constructor.name === "PyObject" ? false : Object.getPrototypeOf(this).hasState(key));
     }
 
     get hasStateGetter () {
