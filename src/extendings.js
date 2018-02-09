@@ -20,3 +20,9 @@ Object.defineProperty(Array.prototype, 'freeze', {
         return Object.freeze(this);
     }
 });
+
+Object.defineProperty(Map.prototype, 'toJSON', {
+    value: function () {
+        return [...this.entries()].reduce((obj, [k, v]) => Object.assign(obj, { [k]: v }), {});
+    }
+});
