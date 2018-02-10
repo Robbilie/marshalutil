@@ -1,5 +1,6 @@
 "use strict";
 
+const { ProtocolType } = require("..");
 const { PyObject, PyMark } = require(".");
 
 class PyObjectEx extends PyObject {
@@ -63,6 +64,36 @@ class PyObjectEx extends PyObject {
         }
         return new obj["NewObj"](header, args);
     }
+
+    encode (marshal, input) {
+        if (input.type === undefined)
+            throw new Error("NoTypeException");
+        return Buffer.from([ input.type ]).concat(
+            marshal.processType(input.header),
+            ...input.args.map(arg => marshal.processType(arg)),
+            Buffer.from([ ProtocolType.Mark ]),
+            ...Object
+                .entries(input.kwargs)
+                .reduce((arr, [k, v]) => {
+                    arr.push(marshal.processType(k));
+                    arr.push(marshal.processType(v));
+                    return arr;
+                }, []),
+            Buffer.from([ ProtocolType.Mark ]),
+        );
+    }
+
+    valueOf () {
+        return this;
+    }
+
+    get args () {
+        return [];
+    }
+
+    get kwargs () {
+        return {};
+
 
 }
 

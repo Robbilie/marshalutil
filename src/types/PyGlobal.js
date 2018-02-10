@@ -1,5 +1,6 @@
 "use strict";
 
+const { ProtocolType } = require("..");
 const { PyObject } = require(".");
 
 class PyGlobal extends PyObject {
@@ -13,6 +14,10 @@ class PyGlobal extends PyObject {
         } else {
             return buffer;
         }
+    }
+
+    encode (marshal, input) {
+        return Buffer.from([ ProtocolType.Global, input.valueOf().length ]).concat(input.valueOf());
     }
 
 }
