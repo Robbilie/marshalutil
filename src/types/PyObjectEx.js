@@ -93,7 +93,7 @@ class PyObjectEx extends PyObject {
 
     get kwargs () {
         return {};
-
+    }
 
 }
 
